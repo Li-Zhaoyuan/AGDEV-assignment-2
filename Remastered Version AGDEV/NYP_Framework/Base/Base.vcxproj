@@ -32,6 +32,7 @@
     <ClCompile Include="Source\SceneGraph\UpdateRotation.cpp" />
     <ClCompile Include="Source\SceneGraph\UpdateTransformation.cpp" />
     <ClCompile Include="Source\Scenes\SceneMain.cpp" />
+    <ClCompile Include="Source\Scenes\SceneSplash.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
     <ClCompile Include="Source\SkyBox\SkyBoxEntity.cpp" />
     <ClCompile Include="Source\SpriteEntity.cpp" />
@@ -73,6 +74,7 @@
     <ClInclude Include="Source\SceneGraph\UpdateRotation.h" />
     <ClInclude Include="Source\SceneGraph\UpdateTransformation.h" />
     <ClInclude Include="Source\Scenes\SceneMain.h" />
+    <ClInclude Include="Source\Scenes\SceneSplash.h" />
     <ClInclude Include="Source\SceneText.h" />
     <ClInclude Include="Source\SkyBox\SkyBoxEntity.h" />
     <ClInclude Include="Source\SpriteEntity.h" />

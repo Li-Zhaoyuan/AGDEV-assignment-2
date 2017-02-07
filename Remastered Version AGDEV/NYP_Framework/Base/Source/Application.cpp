@@ -214,7 +214,7 @@ void Application::Init()
 
 void Application::Run()
 {
-	SceneManager::GetInstance()->SetActiveScene("Main");
+	SceneManager::GetInstance()->SetActiveScene("Splash");
     // Active Window Detection
     HWND hwnd = GetActiveWindow();
     UpdateInput();

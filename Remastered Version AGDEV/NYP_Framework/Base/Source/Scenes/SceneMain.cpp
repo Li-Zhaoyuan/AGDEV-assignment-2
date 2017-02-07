@@ -85,6 +85,7 @@ void SceneMain::Init()
     gameWidth = Application::GetInstance().GetWindowWidth();
     gameHeight = Application::GetInstance().GetWindowHeight();
     Application::GetInstance().hideMouse(false);
+//	GenericEntity* test = Create::Entity(,,)
 }
 
 void SceneMain::Update(double dt)
