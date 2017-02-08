@@ -57,6 +57,96 @@ Application::Application()
 Application::~Application()
 {
 }
+//lua_State*l;
+static int CreateOBJ(lua_State*l)
+{
+	int n = lua_gettop(l);// how many parameters :V
+
+	/*for (int i = 1; i < n; ++i)
+	{
+
+	}*/
+	//MeshBuilder::GetInstance()->GenerateOBJ("ASTEROID", "OBJ//asteroid.obj")->textureID = LoadTGA("Image//lasergun.tga");
+	//std::string type = lua_tostring(l, 1);
+	std::string meshName = lua_tostring(l,1);
+	std::string filepathForOBJ = lua_tostring(l, 2);
+	std::string filepathForText = lua_tostring(l, 3);
+	
+	Mesh* tempobj;
+	
+	tempobj = MeshBuilder::GetInstance()->GenerateOBJ(meshName, filepathForOBJ);
+	tempobj->textureID = LoadTGA(filepathForText.c_str());
+	
+	return 1;
+}
+
+static int CreateQuad(lua_State*l)
+{
+	int n = lua_gettop(l);// how many parameters :V
+
+	/*for (int i = 1; i < n; ++i)
+	{
+
+	}*/
+	//MeshBuilder::GetInstance()->GenerateOBJ("ASTEROID", "OBJ//asteroid.obj")->textureID = LoadTGA("Image//lasergun.tga");
+	//std::string type = lua_tostring(l, 1);
+	std::string meshName = lua_tostring(l, 1);
+	//std::string filepathForOBJ = lua_tostring(l, 2);
+	std::string filepathForText = lua_tostring(l, 2);
+
+	Mesh* tempobj;
+
+	tempobj = MeshBuilder::GetInstance()->GenerateQuad(meshName, Color(1, 1, 1), 1.f);
+	tempobj->textureID = LoadTGA(filepathForText.c_str());
+
+	return 1;
+}
+
+static int CreateText(lua_State*l)
+{
+	int n = lua_gettop(l);// how many parameters :V
+
+	/*for (int i = 1; i < n; ++i)
+	{
+
+	}*/
+	//MeshBuilder::GetInstance()->GenerateOBJ("ASTEROID", "OBJ//asteroid.obj")->textureID = LoadTGA("Image//lasergun.tga");
+	//std::string type = lua_tostring(l, 1);
+	std::string meshName = lua_tostring(l, 1);
+	//std::string filepathForOBJ = lua_tostring(l, 2);
+	int row = lua_tointeger(l, 2);
+	int col = lua_tointeger(l, 3);
+	std::string filepathForText = lua_tostring(l, 4);
+
+	Mesh* tempobj;
+
+	tempobj = MeshBuilder::GetInstance()->GenerateText(meshName, row, col);
+	tempobj->textureID = LoadTGA(filepathForText.c_str());
+
+	return 1;
+}
+
+static int CreateAxis(lua_State*l)
+{
+	int n = lua_gettop(l);// how many parameters :V
+
+	/*for (int i = 1; i < n; ++i)
+	{
+
+	}*/
+	//MeshBuilder::GetInstance()->GenerateOBJ("ASTEROID", "OBJ//asteroid.obj")->textureID = LoadTGA("Image//lasergun.tga");
+	//std::string type = lua_tostring(l, 1);
+	std::string meshName = lua_tostring(l, 1);
+	//std::string filepathForOBJ = lua_tostring(l, 2);
+	//std::string filepathForText = lua_tostring(l, 2);
+
+	Mesh* tempobj;
+
+	tempobj = MeshBuilder::GetInstance()->GenerateAxes(meshName);
+	//tempobj->textureID = LoadTGA(filepathForText.c_str());
+
+	return 1;
+}
 
 void Application::Init()
 {
@@ -117,82 +207,22 @@ void Application::Init()
 	// Init systems
 	GraphicsManager::GetInstance()->Init();
     // Load all the meshes
-    MeshBuilder::GetInstance()->GenerateAxes("reference");
+   // MeshBuilder::GetInstance()->GenerateAxes("reference");
     //MeshBuilder::GetInstance()->GenerateCrossHair("crosshair");
-    MeshBuilder::GetInstance()->GenerateQuad("quad", Color(1, 1, 1), 1.f);
-    MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA("Image//calibri.tga");
-    MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
-    MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
-    MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
+    //MeshBuilder::GetInstance()->GenerateQuad("quad", Color(0, 0, 0), 1.f);
+   // MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA("Image//calibri.tga");
+    //MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
+    //MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
+    //MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
     //MeshBuilder::GetInstance()->GenerateOBJ("Chair", "OBJ//chair.obj");
     //MeshBuilder::GetInstance()->GetMesh("Chair")->textureID = LoadTGA("Image//chair.tga");
-    MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
+    /*MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
     MeshBuilder::GetInstance()->GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
     MeshBuilder::GetInstance()->GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 1.f);
     MeshBuilder::GetInstance()->GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
     MeshBuilder::GetInstance()->GenerateCube("cube", Color(1.0f, 1.0f, 0.0f), 1.0f);
     MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
-    MeshBuilder::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
-    MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
-    //MeshBuilder::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//grass_darkgreen.tga");
-    MeshBuilder::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//moonGround1.tga");
-    MeshBuilder::GetInstance()->GenerateQuad("GEO_GRASS_LIGHTGREEN", Color(1, 1, 1), 1.f);
-    //MeshBuilder::GetInstance()->GetMesh("GEO_GRASS_LIGHTGREEN")->textureID = LoadTGA("Image//grass_lightgreen.tga");
-    MeshBuilder::GetInstance()->GetMesh("GEO_GRASS_LIGHTGREEN")->textureID = LoadTGA("Image//moonGround2.tga");
-
-    MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
-    MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
-    MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_LEFT", Color(1, 1, 1), 1.f);
-    MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_RIGHT", Color(1, 1, 1), 1.f);
-    MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_TOP", Color(1, 1, 1), 1.f);
-    MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BOTTOM", Color(1, 1, 1), 1.f);
-    MeshBuilder::GetInstance()->GetMesh("SKYBOX_FRONT")->textureID = LoadTGA("Image//SkyBox//NebulaFront.tga");
-    MeshBuilder::GetInstance()->GetMesh("SKYBOX_BACK")->textureID = LoadTGA("Image//SkyBox//NebulaBack_Kai.tga");
-    MeshBuilder::GetInstance()->GetMesh("SKYBOX_LEFT")->textureID = LoadTGA("Image//SkyBox//NebulaLeft.tga");
-    MeshBuilder::GetInstance()->GetMesh("SKYBOX_RIGHT")->textureID = LoadTGA("Image//SkyBox//NebulaRight.tga");
-    MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//NebulaTop_KaiNew.tga");
-    MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//NebulaBottom_Kai.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ASTEROID", "OBJ//asteroid.obj")->textureID = LoadTGA("Image//lasergun.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ASTEROID1", "OBJ//asteroid_mid.obj")->textureID = LoadTGA("Image//lasergun.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ASTEROID2", "OBJ//asteroid_low.obj")->textureID = LoadTGA("Image//lasergun.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK1_1", "OBJ//rock_HIGH.obj")->textureID = LoadTGA("Image//rock.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK1_2", "OBJ//rock_MEDIUM.obj")->textureID = LoadTGA("Image//rock.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK1_3", "OBJ//rock_LOW.obj")->textureID = LoadTGA("Image//rock.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK2_1", "OBJ//rock2_HIGH.obj")->textureID = LoadTGA("Image//rock2.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK2_2", "OBJ//rock2_MEDIUM.obj")->textureID = LoadTGA("Image//rock2.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK2_3", "OBJ//rock2_LOW.obj")->textureID = LoadTGA("Image//rock2.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK3_1", "OBJ//rock3_HIGH.obj")->textureID = LoadTGA("Image//rock3.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK3_2", "OBJ//rock3_MEDIUM.obj")->textureID = LoadTGA("Image//rock3.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("ROCK3_3", "OBJ//rock3_LOW.obj")->textureID = LoadTGA("Image//rock3.tga");
-    MeshBuilder::GetInstance()->GenerateOBJ("BULLET1", "OBJ//Bullet1.obj")->textureID = LoadTGA("Image//bulletSkin.tga");
-    MeshBuilder::GetInstance()->GenerateOBJ("BULLET2", "OBJ//Bullet2.obj")->textureID = LoadTGA("Image//bulletSkin.tga");
-    MeshBuilder::GetInstance()->GenerateOBJ("BULLET3", "OBJ//Bullet3.obj")->textureID = LoadTGA("Image//bulletSkin.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("SHIP_1", "OBJ//ship_HIGH.obj")->textureID = LoadTGA("Image//ship.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("SHIP_2", "OBJ//ship_MEDIUM.obj")->textureID = LoadTGA("Image//ship.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("SHIP_3", "OBJ//ship_LOW.obj")->textureID = LoadTGA("Image//ship.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("SHIP_3", "OBJ//ship_LOW.obj")->textureID = LoadTGA("Image//ship.tga");
-
-    MeshBuilder::GetInstance()->GenerateQuad("crosshair", Color(1, 1, 1), 1.f)->textureID = LoadTGA("Image//scope.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("Gun", "OBJ//lasergun.obj")->textureID = LoadTGA("Image//asteroid.tga");
-
-    MeshBuilder::GetInstance()->GenerateOBJ("BASE", "OBJ//satelite_base.obj")->textureID = LoadTGA("Image//asteroid.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("BASE1", "OBJ//satelite_base_MEDIUM.obj")->textureID = LoadTGA("Image//asteroid.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("BASE2", "OBJ//satelite_base_LOW.obj")->textureID = LoadTGA("Image//asteroid.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("STAND1", "OBJ//satelite_stand1.obj")->textureID = LoadTGA("Image//rock2.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("STAND2", "OBJ//satelite_stand2.obj")->textureID = LoadTGA("Image//rock3.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("DISH", "OBJ//satelite_dish.obj")->textureID = LoadTGA("Image//rock.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("DISH1", "OBJ//satelite_dish_MEDIUM.obj")->textureID = LoadTGA("Image//rock.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("DISH2", "OBJ//satelite_dish_LOW.obj")->textureID = LoadTGA("Image//rock.tga");
-
-    MeshBuilder::GetInstance()->GenerateOBJ("PLANET_RING", "OBJ//PlanetRing.obj")->textureID = LoadTGA("Image//PlanetRing.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("PLANET_RING1", "OBJ//PlanetRing_MEDIUM.obj")->textureID = LoadTGA("Image//PlanetRing.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("PLANET_RING2", "OBJ//PlanetRing_LOW.obj")->textureID = LoadTGA("Image//PlanetRing.tga");
-
-    MeshBuilder::GetInstance()->GenerateOBJ("PLANET", "OBJ//Planet.obj")->textureID = LoadTGA("Image//Planet.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("PLANET1", "OBJ//Planet_MEDIUM.obj")->textureID = LoadTGA("Image//Planet.tga");
-	MeshBuilder::GetInstance()->GenerateOBJ("PLANET2", "OBJ//Planet_LOW.obj")->textureID = LoadTGA("Image//Planet.tga");
+    MeshBuilder::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);*/
 
     //MeshBuilder::GetInstance()->GenerateOBJ("ANDROID", "OBJ//android2.obj")->textureID = LoadTGA("Image//android2.tga");    // creating the basic NPC
 
@@ -203,8 +233,19 @@ void Application::Init()
     MusicSystem::accessing().playBackgroundMusic("BGM");
 
     LuaInterface::GetInstance()->Init();
-    LuaInterface::GetInstance()->saveFloatValue("Score1:", 800.10f);
-    LuaInterface::GetInstance()->saveIntValue("Score2:", 100);
+   /* LuaInterface::GetInstance()->saveFloatValue("Score1 =", 800.10f);
+    LuaInterface::GetInstance()->saveIntValue("Score2 =", 100);*/
+
+	LuaInterface::GetInstance()->theLuaForMeshs = lua_open();
+	luaL_openlibs(LuaInterface::GetInstance()->theLuaForMeshs);
+	
+	lua_register(LuaInterface::GetInstance()->theLuaForMeshs, "CreateOBJ", CreateOBJ);
+	lua_register(LuaInterface::GetInstance()->theLuaForMeshs, "CreateQuad", CreateQuad);
+	lua_register(LuaInterface::GetInstance()->theLuaForMeshs, "CreateText", CreateText);
+	lua_register(LuaInterface::GetInstance()->theLuaForMeshs, "CreateAxis", CreateAxis);
+
+	luaL_dofile(LuaInterface::GetInstance()->theLuaForMeshs, "lua//createmesh.lua");
+	lua_close(LuaInterface::GetInstance()->theLuaForMeshs);
 
     lua_getglobal(LuaInterface::GetInstance()->theLuaState, "Waypoint_A_1");
     Vector3 testingDebugWaypoint1(LuaInterface::GetInstance()->getField("x"), LuaInterface::GetInstance()->getField("y"), LuaInterface::GetInstance()->getField("z"));
@@ -215,6 +256,7 @@ void Application::Init()
 void Application::Run()
 {
 	SceneManager::GetInstance()->SetActiveScene("Splash");
+	SceneManager::GetInstance()->SetActiveSubScene("HighScore");
     // Active Window Detection
     HWND hwnd = GetActiveWindow();
     UpdateInput();
@@ -340,3 +382,4 @@ void Application::hideMouse(const bool &zeToggle)
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
+

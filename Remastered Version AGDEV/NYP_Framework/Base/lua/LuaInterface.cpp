@@ -6,7 +6,7 @@ bool LuaInterface::Init()
 {
     // Create lua state
     theLuaState = lua_open();
-
+	//theLuaForMeshs = lua_open();
     if (theLuaState)
     {
         // 2. Load lua auxiliary libraries
@@ -65,6 +65,45 @@ const char *LuaInterface::getStringValue(char *zeKey)
 {
     lua_getglobal(theLuaState, zeKey);
     return lua_tolstring(theLuaState, -1, NULL);
+}
+
+char LuaInterface::getCharValue(const char* key)
+{
+	lua_getglobal(theLuaState, key);
+
+	size_t len;
+	const char* cstr = lua_tolstring(theLuaState, -1, &len);
+
+	if (len > 0)
+		return cstr[0];
+	else
+		return ' ';
+}
+
+Vector3 LuaInterface::getVector3Value(const char* key)
+{
+	lua_getglobal(theLuaState, key);
+	lua_rawgeti(theLuaState, -1, 1);
+	int x = lua_tonumber(theLuaState, -1);
+	lua_pop(theLuaState, 1);
+	lua_rawgeti(theLuaState, -1, 2);
+	int y = lua_tonumber(theLuaState, -1);
+	lua_pop(theLuaState, 1);
+	lua_rawgeti(theLuaState, -1, 3);
+	int z = lua_tonumber(theLuaState, -1);
+	lua_pop(theLuaState, 1);
+
+	return Vector3(x, y, z);
+}
+
+std::string LuaInterface::getStringValue(const char* key)
+{
+	lua_getglobal(theLuaState, key);
+
+	size_t len;
+	std::string str = lua_tolstring(theLuaState, -1, &len);
+
+	return str;
 }
 
 void LuaInterface::saveIntValue(const char *varName, const int &zeValue)

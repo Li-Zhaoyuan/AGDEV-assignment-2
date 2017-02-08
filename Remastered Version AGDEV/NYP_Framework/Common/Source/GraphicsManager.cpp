@@ -20,7 +20,7 @@ GraphicsManager::~GraphicsManager()
 void GraphicsManager::Init()
 {
 	// Black background
-	glClearColor(1.0f, 1.0f, 1.f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.f, 0.0f);
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one

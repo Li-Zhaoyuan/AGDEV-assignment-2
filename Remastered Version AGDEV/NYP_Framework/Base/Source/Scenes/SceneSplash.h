@@ -32,4 +32,6 @@ protected:
 	// boundaries will act as the right, top, far!
 	Vector3 boundaries;
 	int gameWidth, gameHeight;
+	float timeToChangeScene;
+	EntityBase* nyplogo;
 };

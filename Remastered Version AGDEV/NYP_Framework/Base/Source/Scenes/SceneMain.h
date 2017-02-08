@@ -32,4 +32,17 @@ protected:
     // boundaries will act as the right, top, far!
     Vector3 boundaries;
     int gameWidth, gameHeight;
+	EntityBase * title;
+	EntityBase * startbutton;
+	EntityBase * highscorebutton;
+	EntityBase * quitbutton;
+	EntityBase * selectkey;
+
+	std::vector<EntityBase *> selectionList;
+	std::vector<EntityBase *>::iterator selectIter;
+
+	float keypress;
+	float titleScale;
+
+	bool showSubScene;
 };

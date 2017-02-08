@@ -124,4 +124,16 @@ private:
 
     Weapon *mainWeapon;
     Vector3 boundary_;
+
+	char keyMoveForward;
+	char keyMoveBackward;
+	char keyMoveLeft;
+	char keyMoveRight;
+	char keyReload;
+	char keyReset;
+
+	int ammo;
+	int maxClips;
+	float fireRate;
+	
 };

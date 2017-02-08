@@ -247,7 +247,10 @@ void SceneText::Update(double dt)
     MusicSystem::accessing().Update(dt);
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
-	
+	//if (KeyboardController::GetInstance()->IsKeyDown((char)8) )//backspace
+	//{
+	//	SceneManager::GetInstance()->SetActiveScene("Main");
+	//}
     for (std::vector<GenericEntity*>::iterator it = m_activeList.begin(), end = m_activeList.end(); it != end; ++it)
     {
         (*it)->Update(dt);
@@ -356,7 +359,7 @@ void SceneText::Update(double dt)
     playerInfo->Update(dt);
 	theGun->onNotify(playerInfo->GetCurrCamera().GetCameraPos(), playerInfo->GetCurrCamera().GetCameraRotation());
 	theGun->onNotify(playerInfo->GetCurrCamera().GetCameraRight());
-	GraphicsManager::GetInstance()->UpdateLights(dt);
+	//GraphicsManager::GetInstance()->UpdateLights(dt);
 
 	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
@@ -504,7 +507,7 @@ void SceneText::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	GraphicsManager::GetInstance()->UpdateLightUniforms();
+	//GraphicsManager::GetInstance()->UpdateLightUniforms();
 
 	// Setup 3D pipeline then render 3D
 	GraphicsManager::GetInstance()->SetPerspectiveProjection(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);

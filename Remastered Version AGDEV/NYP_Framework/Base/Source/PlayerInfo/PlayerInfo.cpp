@@ -4,6 +4,7 @@
 #include "MouseController.h"
 #include "KeyboardController.h"
 #include "Mtx44.h"
+#include "../../lua/LuaInterface.h"
 
 // Allocating and initializing CPlayerInfo's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -24,10 +25,30 @@ CPlayerInfo::CPlayerInfo(void)
 	, m_dFallAcceleration(-10.0)
 	, attachedCamera(NULL)
 	, m_pTerrain(NULL)
+	, keyMoveForward('W')
+	, keyMoveBackward('S')
+	, keyMoveLeft('A')
+	, keyMoveRight('D')
+	, keyReload('E')
+	, keyReset('P')
+	, ammo(15)
+	, maxClips(1)
+	, fireRate(0.2f)
+
 {
-    mainWeapon = new Weapon();
-    mainWeapon->onNotify(0.2f);
-    mainWeapon->onNotify(15, 1);
+    
+	keyMoveForward = LuaInterface::GetInstance()->getCharValue("moveForward");
+	keyMoveBackward = LuaInterface::GetInstance()->getCharValue("moveBackward");
+	keyMoveLeft = LuaInterface::GetInstance()->getCharValue("moveLeft");
+	keyMoveRight = LuaInterface::GetInstance()->getCharValue("moveRight");
+	keyReload = LuaInterface::GetInstance()->getCharValue("reload");
+	keyReset = LuaInterface::GetInstance()->getCharValue("reset");
+	ammo = LuaInterface::GetInstance()->getIntValue("ammo");
+	maxClips = LuaInterface::GetInstance()->getIntValue("maxclip");;
+	fireRate = LuaInterface::GetInstance()->getFloatValue("fireRate");
+	mainWeapon = new Weapon();
+	mainWeapon->onNotify(fireRate);
+	mainWeapon->onNotify(ammo, maxClips);
 }
 
 CPlayerInfo::~CPlayerInfo(void)
@@ -165,12 +186,12 @@ void CPlayerInfo::Reset(void)
 	//up = defaultUp;
 
 	// Stop vertical movement too
-    mainWeapon->onNotify(15, 1);
+	mainWeapon->onNotify(ammo, maxClips);
     StopVerticalMovement();
 }
 void CPlayerInfo::refillAmmo()
 {
-	mainWeapon->onNotify(15, 1);
+	mainWeapon->onNotify(ammo, maxClips);
 }
 
 // Get position x of the player
@@ -259,24 +280,24 @@ void CPlayerInfo::Update(double dt)
 	double camera_pitch = mouse_diff_y * 0.0174555555555556;	// 3.142 / 180.0
 
 	// Update the position if the WASD buttons were activated
-	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
-		KeyboardController::GetInstance()->IsKeyDown('A') ||
-		KeyboardController::GetInstance()->IsKeyDown('S') ||
-		KeyboardController::GetInstance()->IsKeyDown('D'))
+	if (KeyboardController::GetInstance()->IsKeyDown(keyMoveForward) ||
+		KeyboardController::GetInstance()->IsKeyDown(keyMoveBackward) ||
+		KeyboardController::GetInstance()->IsKeyDown(keyMoveRight) ||
+		KeyboardController::GetInstance()->IsKeyDown(keyMoveLeft))
 	{
         Vector3 viewVector = attachedCamera->GetCameraTarget() - attachedCamera->GetCameraPos();
         Vector3 normalizedView = viewVector.Normalized();
         normalizedView.y = 0;
 		Vector3 rightUV(0,0,0);
-		if (KeyboardController::GetInstance()->IsKeyDown('W'))
+		if (KeyboardController::GetInstance()->IsKeyDown(keyMoveForward))
 		{
             attachedCamera->GetCameraPos() += normalizedView * (float)m_dSpeed * (float)dt;
 		}
-		else if (KeyboardController::GetInstance()->IsKeyDown('S'))
+		else if (KeyboardController::GetInstance()->IsKeyDown(keyMoveBackward))
 		{
             attachedCamera->GetCameraPos() -= normalizedView * (float)m_dSpeed * (float)dt;
 		}
-		if (KeyboardController::GetInstance()->IsKeyDown('A'))
+		if (KeyboardController::GetInstance()->IsKeyDown(keyMoveLeft))
 		{
             if (rightUV.IsZero())
                 rightUV = (normalizedView).Cross(attachedCamera->GetCameraUp());
@@ -284,7 +305,7 @@ void CPlayerInfo::Update(double dt)
 			rightUV.Normalize();
             attachedCamera->GetCameraPos() -= rightUV * (float)m_dSpeed * (float)dt;
 		}
-		else if (KeyboardController::GetInstance()->IsKeyDown('D'))
+		else if (KeyboardController::GetInstance()->IsKeyDown(keyMoveRight))
 		{
             if (rightUV.IsZero())
                 rightUV = (normalizedView).Cross(attachedCamera->GetCameraUp());
@@ -443,12 +464,12 @@ void CPlayerInfo::Update(double dt)
 	{
 
 	}
-    if (KeyboardController::GetInstance()->IsKeyDown('E'))
+    if (KeyboardController::GetInstance()->IsKeyDown(keyReload))
     {
         mainWeapon->onNotify("RELOAD");
     }
     // If the user presses R key, then reset the view to default values
-	if (KeyboardController::GetInstance()->IsKeyDown('P'))
+	if (KeyboardController::GetInstance()->IsKeyDown(keyReset))
 	{
 		Reset();
 	}

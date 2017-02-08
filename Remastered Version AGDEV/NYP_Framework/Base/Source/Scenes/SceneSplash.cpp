@@ -74,7 +74,7 @@ void SceneSplash::Init()
 
 	mainCamera.Init(Vector3(0, 0, 9.95f), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
-	m_activeList.push_back(Create::Entity("reference", Vector3(0, 0, 0)));
+	//m_activeList.push_back(Create::Entity("reference", Vector3(0, 0, 0)));
 
 	boundaries.Set(400, 300, 10);   // We will just take the resolution of 800 by 600
 
@@ -86,6 +86,11 @@ void SceneSplash::Init()
 	gameHeight = Application::GetInstance().GetWindowHeight();
 	Application::GetInstance().hideMouse(false);
 	//	GenericEntity* test = Create::Entity(,,)
+	float worldX = ((float)(gameWidth / 2) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float worldY = ((float)(gameHeight - (gameHeight/2)) / gameHeight * boundaries.y * 2) - boundaries.y;
+	nyplogo = Create::Entity("LOGO", Vector3(worldX, worldY, 0.f), Vector3(gameWidth*0.1 * (360 / 77), gameWidth*0.1, 5));
+	m_activeList.push_back(nyplogo);
+	timeToChangeScene = 0.f;
 }
 
 void SceneSplash::Update(double dt)
@@ -99,11 +104,11 @@ void SceneSplash::Update(double dt)
 	if (KeyboardController::GetInstance()->IsKeyDown('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	if (KeyboardController::GetInstance()->IsKeyDown(' '))
+	if (KeyboardController::GetInstance()->IsKeyDown('5'))
 	{
 		Application::GetInstance().m_lockMouse = true;
 		Application::GetInstance().hideMouse(true);
-		SceneManager::GetInstance()->SetActiveScene("Start");
+		SceneManager::GetInstance()->SetActiveScene("Main");
 	}
 	// For Mouse detection debugging only!
 	POINT mousePosition;
@@ -113,6 +118,22 @@ void SceneSplash::Update(double dt)
 	float worldY = ((float)(gameHeight - mousePosition.y) / gameHeight * boundaries.y * 2) - boundaries.y;
 	ss << "Mouse: " << worldX << ", " << worldY;
 	debuggingMouse->onNotify(ss.str());
+
+	timeToChangeScene += dt;
+	if (timeToChangeScene > 2.f)
+	{
+		float changeTheScale = nyplogo->GetScale().y - dt * 100;
+		if (changeTheScale < 0.01f)
+		{
+			changeTheScale = 0.01f;
+			SceneManager::GetInstance()->SetActiveScene("Main");
+			//nyplogo->SetScale(Vector3(nyplogo->GetScale().x, 100, 0));
+		}
+		else
+		{
+			nyplogo->SetScale(Vector3(nyplogo->GetScale().x, changeTheScale, 0));
+		}
+	}
 	// For Mouse detection debugging only!
 }
 

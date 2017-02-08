@@ -23,6 +23,9 @@ public:
 	
 	static void MouseButtonCallbacks(GLFWwindow* window, int button, int action, int mods);
 	static void MouseScrollCallbacks(GLFWwindow* window, double xoffset, double yoffset);
+
+	//static int CreateOBJ(lua_State*l);
+	//void CreateQuad();
     //static void GetCursorPos(double *xpos, double *ypos);
 
 	int GetWindowHeight();

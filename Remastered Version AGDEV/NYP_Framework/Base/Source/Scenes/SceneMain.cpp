@@ -85,6 +85,44 @@ void SceneMain::Init()
     gameWidth = Application::GetInstance().GetWindowWidth();
     gameHeight = Application::GetInstance().GetWindowHeight();
     Application::GetInstance().hideMouse(false);
+
+	float titleX = ((float)(gameWidth / 2) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float titleY = ((float)(gameHeight - (gameHeight * 0.2f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+
+	float startX = ((float)(gameWidth / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float startY = ((float)(gameHeight - (gameHeight * 0.4f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+
+	float highscoreX = ((float)(gameWidth / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float highscoreY = ((float)(gameHeight - (gameHeight * 0.6f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+
+	float quitX = ((float)(gameWidth / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float quitY = ((float)(gameHeight - (gameHeight * 0.8f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+
+	float selectX = ((float)(gameWidth / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float selectY = ((float)(gameHeight - (gameHeight * 0.4f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+
+	title = Create::Entity("GAMETITLE", Vector3(titleX, titleY, 0.f), Vector3(gameWidth*0.04 * (145 / 17), gameWidth*0.04, 5));
+	startbutton = Create::Entity("STARTBUTTON", Vector3(startX, startY, 0.f), Vector3(gameWidth*0.02 * (800/199), gameWidth*0.02, 5));
+	highscorebutton = Create::Entity("HIGHSCORE", Vector3(highscoreX, highscoreY, 0.f), Vector3(gameWidth*0.02 * (800 / 199), gameWidth*0.02, 5));
+	quitbutton = Create::Entity("QUITBUTTON", Vector3(quitX, quitY, 0.f), Vector3(gameWidth*0.02 * (800 / 199), gameWidth*0.02, 5));
+	selectkey = Create::Entity("SELECT", Vector3(startX, startY, 0.f), Vector3((gameWidth*0.02 * (800 / 199))*1.2f, (gameWidth*0.02)*1.2f, 5));
+	m_activeList.push_back(title);
+	m_activeList.push_back(startbutton);
+	m_activeList.push_back(highscorebutton);
+	m_activeList.push_back(quitbutton);
+	m_activeList.push_back(selectkey);
+	selectionList.push_back(startbutton);
+	selectionList.push_back(highscorebutton);
+	selectionList.push_back(quitbutton);
+	selectIter = selectionList.begin();
+	keypress = 1.f;
+	showSubScene = false;
+	titleScale = 0.f;
+	
+	/*startbutton;
+	highscorebutton;
+	quitbutton;
+	selectkey;*/
 //	GenericEntity* test = Create::Entity(,,)
 }
 
@@ -105,6 +143,73 @@ void SceneMain::Update(double dt)
         Application::GetInstance().hideMouse(true);
         SceneManager::GetInstance()->SetActiveScene("Start");
     }
+	keypress += dt;
+	if (KeyboardController::GetInstance()->IsKeyDown('W') && keypress > 0.2f)
+	{
+		//EntityBase* temp = selectionList.popfront();
+		if (selectIter != selectionList.begin())
+		{
+			--selectIter;
+		}
+		else
+		{
+			selectIter = selectionList.end() - 1;
+		}
+		selectkey->SetPosition((*selectIter)->GetPosition());
+		keypress = 0.f;
+
+	}
+	else if (KeyboardController::GetInstance()->IsKeyDown('S') && keypress > 0.2f)
+	{
+		
+		if (selectIter != selectionList.end() - 1)
+		{
+			++selectIter;
+		}
+		else
+		{
+			selectIter = selectionList.begin();
+		}
+		selectkey->SetPosition((*selectIter)->GetPosition());
+		keypress = 0.f;
+	}
+
+	if (KeyboardController::GetInstance()->IsKeyDown((char)13) && keypress > 0.2f)
+	{
+		if ((*selectIter) == startbutton)
+		{
+			Application::GetInstance().m_lockMouse = true;
+			Application::GetInstance().hideMouse(true);
+			SceneManager::GetInstance()->SetActiveScene("Start");
+		}
+		else if ((*selectIter) == highscorebutton)
+		{
+			SceneManager::GetInstance()->SetActiveSubScene("HighScore");
+			showSubScene = true;
+		}
+		else if ((*selectIter) == quitbutton)
+		{
+			SceneManager::GetInstance()->SetActiveSubScene("Quit");
+			showSubScene = true;
+		}
+
+	}
+
+	static float f = 1;
+
+	if (f*titleScale < 2)
+	{
+		titleScale += 10 * dt * f;
+	}
+	else
+	{
+		f = -f;
+	}
+
+	float scaleX = title->GetScale().x;
+	float scaleY = title->GetScale().y;
+	title->SetScale(Vector3(scaleX + titleScale, scaleY + titleScale, 1));
+
     // For Mouse detection debugging only!
     POINT mousePosition;
     GetCursorPos(&mousePosition);
@@ -114,13 +219,16 @@ void SceneMain::Update(double dt)
     ss << "Mouse: " << worldX << ", " << worldY;
     debuggingMouse->onNotify(ss.str());
     // For Mouse detection debugging only!
+
+	if (showSubScene)
+		SceneManager::GetInstance()->UpdateSub(dt);
 }
 
 void SceneMain::Render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    GraphicsManager::GetInstance()->UpdateLightUniforms();
+    //GraphicsManager::GetInstance()->UpdateLightUniforms();
     GraphicsManager::GetInstance()->SetOrthographicProjection(-boundaries.x, boundaries.x, -boundaries.y, boundaries.y, -boundaries.z, boundaries.z);
     GraphicsManager::GetInstance()->AttachCamera(&mainCamera);
 
@@ -128,6 +236,8 @@ void SceneMain::Render()
     {
         (*it)->Render();
     }
+	if (showSubScene)
+		SceneManager::GetInstance()->RenderSub();
 }
 
 void SceneMain::Exit()
