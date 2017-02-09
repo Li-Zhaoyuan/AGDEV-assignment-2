@@ -255,7 +255,7 @@ void Application::Init()
 
 void Application::Run()
 {
-	SceneManager::GetInstance()->SetActiveScene("Splash");
+	SceneManager::GetInstance()->SetActiveScene("Main");
 	SceneManager::GetInstance()->SetActiveSubScene("HighScore");
     // Active Window Detection
     HWND hwnd = GetActiveWindow();

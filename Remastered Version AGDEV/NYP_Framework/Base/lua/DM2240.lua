@@ -44,7 +44,7 @@ reload = "E"
 reset = "P"
 
 --player
-fireRate = 0.2f
+fireRate = 0.2
 ammo = 15
 maxclip = 1
 

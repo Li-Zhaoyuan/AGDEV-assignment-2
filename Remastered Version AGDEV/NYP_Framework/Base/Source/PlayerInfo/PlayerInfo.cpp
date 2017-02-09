@@ -36,16 +36,12 @@ CPlayerInfo::CPlayerInfo(void)
 	, fireRate(0.2f)
 
 {
-    
 	keyMoveForward = LuaInterface::GetInstance()->getCharValue("moveForward");
 	keyMoveBackward = LuaInterface::GetInstance()->getCharValue("moveBackward");
 	keyMoveLeft = LuaInterface::GetInstance()->getCharValue("moveLeft");
 	keyMoveRight = LuaInterface::GetInstance()->getCharValue("moveRight");
-	keyReload = LuaInterface::GetInstance()->getCharValue("reload");
-	keyReset = LuaInterface::GetInstance()->getCharValue("reset");
-	ammo = LuaInterface::GetInstance()->getIntValue("ammo");
-	maxClips = LuaInterface::GetInstance()->getIntValue("maxclip");;
-	fireRate = LuaInterface::GetInstance()->getFloatValue("fireRate");
+	
+	
 	mainWeapon = new Weapon();
 	mainWeapon->onNotify(fireRate);
 	mainWeapon->onNotify(ammo, maxClips);

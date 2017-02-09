@@ -72,12 +72,11 @@ char LuaInterface::getCharValue(const char* key)
 	lua_getglobal(theLuaState, key);
 
 	size_t len;
-	const char* cstr = lua_tolstring(theLuaState, -1, &len);
+	std::string str = lua_tostring(theLuaState, -1);
 
-	if (len > 0)
-		return cstr[0];
-	else
-		return ' ';
+
+	return str.c_str()[0];
+	
 }
 
 Vector3 LuaInterface::getVector3Value(const char* key)
