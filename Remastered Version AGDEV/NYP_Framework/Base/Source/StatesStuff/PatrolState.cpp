@@ -38,14 +38,15 @@ void PatrolState::Update(double dt)
 	}
 	if (!isAtWayPoint)
 	{
-		if ((owner_->GetPosition() - (*waypointIT)).LengthSquared() < 20)
+		if ((owner_->GetPosition() - (*waypointIT)).LengthSquared() < 50)
 		{
 			isAtWayPoint = true;
 		}
 		else
 		{
 			Vector3 temp;
-			temp = -(owner_->GetPosition() - (*waypointIT));
+			//temp = -(owner_->GetPosition() - (*waypointIT));
+			temp = (*waypointIT) - owner_->GetPosition();
 			temp.Normalize();
 			temp *= speed;
 			vel.Set(temp.x, temp.y, temp.z);
@@ -53,16 +54,24 @@ void PatrolState::Update(double dt)
 	}
 	if (isAtWayPoint)
 	{
-		if (waypointIT != WayPointsInMap.end())
+		if (waypointIT != WayPointsInMap.end() - 1)
 		{
 			++waypointIT;
+			isAtWayPoint = false;
 		}
 		else
 		{
 			waypointIT = WayPointsInMap.begin();
+			isAtWayPoint = false;
 		}
 	}
 
+
+	Vector3 temp = owner_->GetPosition();
+	temp += vel * dt;
+	//float temp777 = Math::RadianToDegree(atan2(vel.z, vel.x));
+	owner_->SetRotation(Math::RadianToDegree(atan2(vel.x, vel.z)));
+	owner_->SetPosition(temp);
 }
 
 void PatrolState::initWayPoints()

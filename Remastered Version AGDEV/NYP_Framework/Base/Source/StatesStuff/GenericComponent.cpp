@@ -55,3 +55,13 @@ EntityBase *GenericComponent::getOwner()
 {
     return owner_;
 }
+
+void GenericComponent::setPlayer(CPlayerInfo *player)
+{
+	zePlayer = player;
+}
+
+CPlayerInfo *GenericComponent::getPlayer()
+{
+	return zePlayer;
+}

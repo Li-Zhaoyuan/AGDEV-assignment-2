@@ -2,6 +2,7 @@
 
 #include <string>
 #include "EntityBase.h"
+#include "../PlayerInfo/PlayerInfo.h"
 
 class GenericComponent
 {
@@ -17,6 +18,7 @@ public:
 
     void setName(const std::string zeName);
     void setEntityOwner(EntityBase *zeOwner);
+	void setPlayer(CPlayerInfo *player);
 
     virtual bool onNotify(const std::string &zeEvent) { return false; };
     virtual bool onNotify(const int &zeEvent) { return false; };
@@ -26,8 +28,10 @@ public:
 
     std::string getName();
     EntityBase *getOwner();
+	CPlayerInfo *getPlayer();
 
 protected:
     std::string name_;
     EntityBase *owner_;
+	CPlayerInfo *zePlayer;
 };

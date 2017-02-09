@@ -21,6 +21,9 @@ public:
 	inline void SetScale(const Vector3& _value){ scale = _value; };
 	inline Vector3 GetScale(){ return scale; };
 
+	inline void SetRotation(const float& _value){ rotation = _value; };
+	inline float GetRotation(){ return rotation; };
+
 	bool IsDone();
 	void SetIsDone(const bool &_value);
 
@@ -57,6 +60,7 @@ public:
 protected:
 	Vector3 position;
 	Vector3 scale;
+	float rotation;
 
 	bool isDone,isShot;
 	bool m_bCollider;

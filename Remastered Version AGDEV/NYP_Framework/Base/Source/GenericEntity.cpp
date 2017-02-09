@@ -41,6 +41,7 @@ void GenericEntity::Render()
         modelStack.PushMatrix();
         modelStack.Translate(position.x, position.y, position.z);
         modelStack.Scale(scale.x, scale.y, scale.z);
+		modelStack.Rotate(rotation, 0, 1, 0);
 		if (GetLODStatus() == true)
 		{
 			if (theDetailLevel != NO_DETAILS)

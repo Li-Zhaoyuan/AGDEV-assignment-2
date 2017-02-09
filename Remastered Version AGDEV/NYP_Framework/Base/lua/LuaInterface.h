@@ -42,20 +42,20 @@ protected:
             lua_close(theLuaState);
             theLuaState = nullptr;
         }
-		if (theLuaForMeshs)
+		/*if (theLuaForMeshs)
 		{
 			lua_close(theLuaForMeshs);
 			theLuaForMeshs = nullptr;
-		}
+		}*/
 		if (theErrorState)
 		{
 			lua_close(theErrorState);
 			theErrorState = nullptr;
 		}
-		if (theWayPointState)
+		/*if (theWayPointState)
 		{
 			lua_close(theWayPointState);
 			theWayPointState = nullptr;
-		}
+		}*/
     }
 };

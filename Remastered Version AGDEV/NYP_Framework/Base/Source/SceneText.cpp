@@ -193,7 +193,7 @@ void SceneText::Init()
 		x1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10);
 		y1 = Math::RandFloatMinMax(2, 3);
 		z1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10);
-		CreateSatelite2(Vector3(Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10), Math::RandFloatMinMax(2, 3), Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10)), Vector3(1, 1, 1));
+		CreateSatelite2(Vector3(x1, y1, z1), Vector3(1, 1, 1));
 		std::string str = "satelite";
 		str.append(std::to_string(i + 2));
 		LuaInterface::GetInstance()->saveCoordToFile(LuaInterface::GetInstance()->theLuaState,str.c_str(), x1, y1, z1);
@@ -261,7 +261,7 @@ void SceneText::Init()
 
 	theGun = Create::Gun("Gun", Vector3(playerInfo->GetCurrCamera().GetCameraPos().x, playerInfo->GetCurrCamera().GetCameraPos().y, playerInfo->GetCurrCamera().GetCameraPos().z));
 
-	m_activeList.push_back(AI_Builder::createSimpleAI(Vector3(0, 0, 0), Vector3(1, 1, 1)));
+	m_activeList.push_back(AI_Builder::createSimpleAI(Vector3(0, 0, 0), Vector3(1, 1, 1), playerInfo));
 }
 
 void SceneText::Update(double dt)
