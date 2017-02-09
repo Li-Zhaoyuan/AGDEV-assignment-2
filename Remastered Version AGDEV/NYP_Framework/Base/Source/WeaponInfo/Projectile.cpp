@@ -60,30 +60,39 @@ void Projectile::Update(double dt)
                     {
                         if ((**it) != *this && (*it)->getName().find("Projectile") == std::string::npos)
                         {
-#ifdef _DEBUG
-                            std::cout << "Object is " << (*it)->getName() << std::endl;
-#endif
-                             SceneNode *zeNodeObj = SceneGraph::GetInstance()->GetNode(*it);
-                             Vector3 thatMinAABB = (*it)->GetPosition() - (*it)->GetScale() /*- scale*/;
-                             Vector3 thatMaxAABB = (*it)->GetPosition() + (*it)->GetScale() /*+ scale*/;
-                             if (zeNodeObj)
-                             {
-								thatMinAABB += zeNodeObj->getRealPosition();
-								thatMaxAABB += zeNodeObj->getRealPosition();
-                             }
-                             Vector3 HitPosition(0, 0, 0);
-                             if (CheckLineSegmentPlane(position, position - (position + vel_ * 200.f), thatMinAABB, thatMaxAABB, HitPosition))
-                             //if (trueRayCasting((*it)))
-                             //if (CheckSphereToSphereCollision(*it))
-                             {
-#ifdef _DEBUG
-                                std::cout << "Hit  " << (*it)->getName() << std::endl;
-#endif
-                                isDone = true;
-                                shouldRemoveItself = true;
-                                (*it)->onNotify("DIED");
-                                break;
-                            }
+							if (((*it)->GetPosition() - this->GetPosition()).LengthSquared() < 25)
+							{
+								std::cout << "Hit  " << (*it)->getName() << std::endl;
+
+								isDone = true;
+								shouldRemoveItself = true;
+								(*it)->onNotify("DIED");
+								break;
+							}
+//#ifdef _DEBUG
+//                            std::cout << "Object is " << (*it)->getName() << std::endl;
+//#endif
+//                             SceneNode *zeNodeObj = SceneGraph::GetInstance()->GetNode(*it);
+//                             Vector3 thatMinAABB = (*it)->GetPosition() - (*it)->GetScale() /*- scale*/;
+//                             Vector3 thatMaxAABB = (*it)->GetPosition() + (*it)->GetScale() /*+ scale*/;
+//                             if (zeNodeObj)
+//                             {
+//								thatMinAABB += zeNodeObj->getRealPosition();
+//								thatMaxAABB += zeNodeObj->getRealPosition();
+//                             }
+//                             Vector3 HitPosition(0, 0, 0);
+//                             if (CheckLineSegmentPlane(position, position - (position + vel_ * 200.f), thatMinAABB, thatMaxAABB, HitPosition))
+//                             //if (trueRayCasting((*it)))
+//                             //if (CheckSphereToSphereCollision(*it))
+//                             {
+//#ifdef _DEBUG
+//                                std::cout << "Hit  " << (*it)->getName() << std::endl;
+//#endif
+//                                isDone = true;
+//                                shouldRemoveItself = true;
+//                                (*it)->onNotify("DIED");
+//                                break;
+//                            }
                         }
                     }
             }
