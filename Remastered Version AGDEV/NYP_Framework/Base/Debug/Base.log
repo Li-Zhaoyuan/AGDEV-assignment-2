@@ -1,58 +1,9 @@
-﻿Build started 10/2/2017 4:23:33 AM.
+﻿Build started 10/2/2017 6:10:07 AM.
      1>Project "C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\Base\Base.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/glfw/include" /I"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/glew/include" /I"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/irrKlang-1.5.0/include" /I"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/Common/Source" /I"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/glfw/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\SceneText.cpp Source\Scenes\SceneNothing.cpp
-         SceneNothing.cpp
-         SceneText.cpp
-     1>c:\users\-\desktop\agdev-assignment-2\remastered version agdev\nyp_framework\base\source\scenetext.cpp(566): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\-\desktop\agdev-assignment-2\remastered version agdev\nyp_framework\base\source\scenetext.cpp(601): warning C4102: 'defualt' : unreferenced label
-         Generating Code...
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/Base/lua" /LIBPATH:"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/irrKlang-1.5.0/lib/Win32-visualStudio" /LIBPATH:"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\Debug" /LIBPATH:"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/glfw/lib-msvc100" /LIBPATH:"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\/glew/lib" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib irrKlang.lib lua5.1.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\Debug\Base.lib" /MACHINE:X86 Debug\LuaInterface.obj
-         Debug\AI_Builder.obj
-         Debug\Application.obj
-         Debug\EntityManager.obj
-         Debug\FPSCamera.obj
-         Debug\GenericEntity.obj
-         Debug\GroundEntity.obj
-         Debug\LevelOfDetails.obj
-         Debug\Light.obj
-         Debug\main.obj
-         Debug\Map.obj
-         Debug\MusicEntity2D.obj
-         Debug\MusicSystem.obj
-         Debug\OBJMesh.obj
-         Debug\PlayerInfo.obj
-         Debug\SceneGraph.obj
-         Debug\SceneNode.obj
-         Debug\Transform.obj
-         Debug\UpdateRotation.obj
-         Debug\UpdateTransformation.obj
-         Debug\SceneHighScore.obj
-         Debug\SceneMain.obj
-         Debug\SceneNothing.obj
-         Debug\SceneQuit.obj
-         Debug\SceneSplash.obj
-         Debug\SceneText.obj
-         Debug\SkyBoxEntity.obj
-         Debug\SpriteEntity.obj
-         Debug\AttackState.obj
-         Debug\EscapeState.obj
-         Debug\GenericComponent.obj
-         Debug\HealState.obj
-         Debug\PatrolState.obj
-         Debug\StateMachineComponent.obj
-         Debug\TextEntity.obj
-         Debug\UI_Entity.obj
-         Debug\Projectile.obj
-         Debug\RenderGun.obj
-         Debug\Weapon.obj
-         lua\lua5.1.lib
-     1>LuaInterface.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
-     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>Link:
          Base.vcxproj -> C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\Debug\Base.exe
      1>Done Building Project "C:\Users\-\Desktop\AGDEV-assignment-2\Remastered Version AGDEV\NYP_Framework\Base\Base.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.76
+Time Elapsed 00:00:00.10

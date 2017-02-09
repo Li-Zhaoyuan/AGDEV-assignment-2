@@ -13,6 +13,21 @@ function SaveToLuaFile(outputString, overwrite)
    print("OK")
 end
 
+function SaveToLuaFileForMusic(outputString, overwrite)
+   print("SaveToLuaFile...")
+   local f;						-- The file
+   if overwrite == 1 then		-- Wipe the contents with new data
+      f = assert(io.open("lua/options.lua", "w"))
+   elseif overwrite == 0 then	-- Append with new data
+      f = assert(io.open("lua/options.lua", "a"))
+   end
+   -- Write to the file
+   f:write(outputString)
+   -- Close the file
+   f:close()
+   print("OK")
+end
+
 function SaveSpecificValue(zeKey, zeValue)
 	print("Save To Lua File")
 	local fileHandle

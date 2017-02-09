@@ -6,6 +6,9 @@ bool LuaInterface::Init()
 {
     // Create lua state
     theLuaState = lua_open();
+	theMusicOptionsState = lua_open();
+	luaL_openlibs(theMusicOptionsState);
+	luaL_dofile(theMusicOptionsState, "lua/options.lua");
 	//theWayPointState = lua_open();
 	//theLuaForMeshs = lua_open();
     if (theLuaState)
@@ -117,9 +120,9 @@ void LuaInterface::saveIntValue(const char *varName, const int &zeValue , bool t
 void LuaInterface::saveFloatValue(const char *varName, const float &zeValue, bool toRefresh)
 {
     lua_getglobal(theLuaState, "SaveToLuaFile");
-    char outputString[80];
-    sprintf_s(outputString, "%s %6.4f\n", varName, zeValue);
-    lua_pushstring(theLuaState, outputString);
+   // char outputString[80];
+    //sprintf_s(outputString, "%s %6.4f\n", varName, zeValue);
+	lua_pushstring(theLuaState, varName);
 	lua_pushinteger(theLuaState, toRefresh);
     lua_call(theLuaState, 2, 0);
 }
@@ -214,4 +217,20 @@ void LuaInterface::saveCoordToFile(lua_State *l, const char *varName, float x, f
 	lua_pushstring(theLuaState, str.c_str());
 	lua_pushinteger(theLuaState, toFresh);
 	lua_call(theLuaState, 2, 0);
+}
+
+void LuaInterface::saveMusicSettings(const char *varName, int value, bool toFresh)
+{
+	lua_getglobal(theLuaState, "SaveToLuaFileForMusic");
+	std::string str = varName;
+	str.append(" = ");
+	str.append(std::to_string(value));
+	lua_pushstring(theLuaState, str.c_str());
+	lua_pushinteger(theLuaState, toFresh);
+	lua_call(theLuaState, 2, 0);
+}
+int LuaInterface::getMusicVolume(const char* key)
+{
+	lua_getglobal(theMusicOptionsState, key);
+	return lua_tointeger(theMusicOptionsState, -1);
 }

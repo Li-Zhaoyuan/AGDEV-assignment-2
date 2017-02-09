@@ -150,6 +150,7 @@ static int CreateAxis(lua_State*l)
 
 void Application::Init()
 {
+	LuaInterface::GetInstance()->Init();
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
 
@@ -166,11 +167,21 @@ void Application::Init()
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 
+	int height = LuaInterface::GetInstance()->getIntValue("height");
+	int width = LuaInterface::GetInstance()->getIntValue("width");
 	//Create a window and create its OpenGL context
     const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());	//Obtain Width and Height values from the monitor;
-    m_window_height = mode->height;
-    m_window_width = mode->width;
-    
+	if (height == 0 || width == 0)
+	{
+		m_window_height = mode->height;
+		m_window_width = mode->width;
+	}
+	else
+	{
+		m_window_height = height;
+		m_window_width = width;
+	}
+
     m_window = glfwCreateWindow(m_window_width, m_window_height, "Mah Physicz", NULL, NULL);
 
 	//If the window couldn't be created
@@ -231,8 +242,10 @@ void Application::Init()
 
     MusicSystem::accessing().Init();
     MusicSystem::accessing().playBackgroundMusic("BGM");
+	int volume = LuaInterface::GetInstance()->getMusicVolume("volume");
+	MusicSystem::accessing().musicEngine->setSoundVolume(((float)volume) * 0.01f);
 
-    LuaInterface::GetInstance()->Init();
+    
    /* LuaInterface::GetInstance()->saveFloatValue("Score1 =", 800.10f);
     LuaInterface::GetInstance()->saveIntValue("Score2 =", 100);*/
 

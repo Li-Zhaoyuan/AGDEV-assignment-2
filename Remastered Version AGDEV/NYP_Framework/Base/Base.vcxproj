@@ -34,6 +34,7 @@
     <ClCompile Include="Source\Scenes\SceneHighScore.cpp" />
     <ClCompile Include="Source\Scenes\SceneMain.cpp" />
     <ClCompile Include="Source\Scenes\SceneNothing.cpp" />
+    <ClCompile Include="Source\Scenes\SceneOptions.cpp" />
     <ClCompile Include="Source\Scenes\SceneQuit.cpp" />
     <ClCompile Include="Source\Scenes\SceneSplash.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="Source\Scenes\SceneHighScore.h" />
     <ClInclude Include="Source\Scenes\SceneMain.h" />
     <ClInclude Include="Source\Scenes\SceneNothing.h" />
+    <ClInclude Include="Source\Scenes\SceneOptions.h" />
     <ClInclude Include="Source\Scenes\SceneQuit.h" />
     <ClInclude Include="Source\Scenes\SceneSplash.h" />
     <ClInclude Include="Source\SceneText.h" />

@@ -102,16 +102,16 @@ void SceneNothing::Update(double dt)
 
 void SceneNothing::Render()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	GraphicsManager::GetInstance()->UpdateLightUniforms();
-	GraphicsManager::GetInstance()->SetOrthographicProjection(-boundaries.x, boundaries.x, -boundaries.y, boundaries.y, -boundaries.z, boundaries.z);
-	GraphicsManager::GetInstance()->AttachCamera(&mainCamera);
+	//GraphicsManager::GetInstance()->UpdateLightUniforms();
+	//GraphicsManager::GetInstance()->SetOrthographicProjection(-boundaries.x, boundaries.x, -boundaries.y, boundaries.y, -boundaries.z, boundaries.z);
+	//GraphicsManager::GetInstance()->AttachCamera(&mainCamera);
 
-	for (std::vector<EntityBase*>::iterator it = m_activeList.begin(), end = m_activeList.end(); it != end; ++it)
-	{
-		//(*it)->Render();
-	}
+	//for (std::vector<EntityBase*>::iterator it = m_activeList.begin(), end = m_activeList.end(); it != end; ++it)
+	//{
+	//	//(*it)->Render();
+	//}
 }
 
 void SceneNothing::Exit()

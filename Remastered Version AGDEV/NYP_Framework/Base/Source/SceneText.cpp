@@ -418,12 +418,23 @@ void SceneText::Update(double dt)
 	}
 	if (theAIShip->getHealth() <= 0)//ship gone
 	{
+		std::string str = "TIme = " ;
+		str.append(std::to_string(timeLeft_Second));
+		LuaInterface::GetInstance()->saveFloatValue(str.c_str(), 0);
 		playerInfo->thePlayerEntity.SetPosition(Vector3(0, 0, 0));
 		playerInfo->thePlayerEntity.setHealth(100);
 		theAIShip->setHealth(100);
 		timeLeft_Second = 0;
 		theAIShip->SetIsDone(false);
 		theAIShip->SetIsShot(false);
+		/*int i = 1;
+		std::string strtemp = str;
+		strtemp.append(" = ");
+		strtemp.append(std::to_string(timeLeft_Second));
+		while (LuaInterface::GetInstance()->getFloatValue(str.c_str()))
+		{*/
+
+		}
 		
 		for (std::vector<GenericEntity*>::iterator it = m_inactiveList.begin(), end = m_inactiveList.end(); it != end; ++it)
 		{
@@ -567,9 +578,9 @@ void SceneText::Update(double dt)
 	if (KeyboardController::GetInstance()->IsKeyDown(subSceneUp) && keyLag > 0.2f)
 	{
 		whichSubScene += 1;
-		if (whichSubScene > 2)
+		if (whichSubScene > 3)
 		{
-			whichSubScene = 2;
+			whichSubScene = 3;
 		}
 		hasChangedSubScene = true;
 		keyLag = 0.f;
@@ -596,6 +607,9 @@ void SceneText::Update(double dt)
 			SceneManager::GetInstance()->SetActiveSubScene("HighScore");
 			break;
 		case 2:
+			SceneManager::GetInstance()->SetActiveSubScene("Options");
+			break;
+		case 3:
 			SceneManager::GetInstance()->SetActiveSubScene("Quit");
 			break;
 		defualt:
@@ -620,7 +634,7 @@ void SceneText::Render()
 	EntityManager::GetInstance()->Render();
 	SceneGraph::GetInstance()->Render();
 	theGun->Render();
-	theShip->Render();
+	//theShip->Render();
     for (std::vector<GenericEntity*>::iterator it = m_activeList.begin(), end = m_activeList.end(); it != end; ++it)
     {
 		if (SceneGraph::GetInstance()->GetNode(*it) == NULL)
@@ -657,7 +671,7 @@ void SceneText::Render()
 	//GraphicsManager::GetInstance()->AttachCamera(&mainCamera);
 
 	
-	if (whichSubScene != 0)
+	//if (whichSubScene != 0)
 	{
 		if (showSubscene)
 			SceneManager::GetInstance()->RenderSub();

@@ -36,6 +36,7 @@ protected:
 	EntityBase * startbutton;
 	EntityBase * highscorebutton;
 	EntityBase * quitbutton;
+	EntityBase * optionsbutton;
 	EntityBase * selectkey;
 
 	std::vector<EntityBase *> selectionList;

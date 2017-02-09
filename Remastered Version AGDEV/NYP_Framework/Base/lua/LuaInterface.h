@@ -24,6 +24,9 @@ public:
 
 	void saveCoordToFile(lua_State *l, const char *varName, float x, float y, float z, bool toFresh = false);
 
+	void saveMusicSettings(const char *varName, int value, bool toFresh = false);
+	int getMusicVolume(const char* key);
+
     float getField(char *zeKey);
 	float getField(lua_State *l, char *zeKey);
     void putError(char *zeErrorCode);
@@ -33,7 +36,7 @@ public:
 	lua_State *theLuaForMeshs;
     lua_State *theErrorState;
 	lua_State *theWayPointState;
-
+	lua_State *theMusicOptionsState;
 protected:
     LuaInterface() { theLuaState = nullptr;  }
     virtual ~LuaInterface() {
@@ -51,6 +54,11 @@ protected:
 		{
 			lua_close(theErrorState);
 			theErrorState = nullptr;
+		}
+		if (theMusicOptionsState)
+		{
+			lua_close(theMusicOptionsState);
+			theMusicOptionsState = nullptr;
 		}
 		/*if (theWayPointState)
 		{

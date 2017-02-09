@@ -78,13 +78,13 @@ void SceneMain::Init()
 
     mainCamera.Init(Vector3(0, 0, 9.95f), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
-    m_activeList.push_back(Create::Entity("reference", Vector3(0, 0, 0)));
+    //m_activeList.push_back(Create::Entity("reference", Vector3(0, 0, 0)));
 
     boundaries.Set(400, 300, 10);   // We will just take the resolution of 800 by 600
 
-    m_activeList.push_back(Create::Text2DObject("text", Vector3(-boundaries.x, -boundaries.y + 50, 0), "Press Space To Start", Vector3(25, 25, 1), Color(0, 1, 0)));
+    /*m_activeList.push_back(Create::Text2DObject("text", Vector3(-boundaries.x, -boundaries.y + 50, 0), "Press Space To Start", Vector3(25, 25, 1), Color(0, 1, 0)));
     debuggingMouse = Create::Text2DObject("text", Vector3(-boundaries.x, -boundaries.y + 75, 0), "Mouse", Vector3(25, 25, 1), Color(0, 1, 0));
-    m_activeList.push_back(debuggingMouse);
+    m_activeList.push_back(debuggingMouse);*/
 
     gameWidth = Application::GetInstance().GetWindowWidth();
     gameHeight = Application::GetInstance().GetWindowHeight();
@@ -97,10 +97,13 @@ void SceneMain::Init()
 	float startY = ((float)(gameHeight - (gameHeight * 0.4f)) / gameHeight * boundaries.y * 2) - boundaries.y;
 
 	float highscoreX = ((float)(gameWidth / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
-	float highscoreY = ((float)(gameHeight - (gameHeight * 0.6f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+	float highscoreY = ((float)(gameHeight - (gameHeight * 0.55f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+
+	float OptionsX = ((float)(gameWidth / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float OptionsY = ((float)(gameHeight - (gameHeight * 0.7f)) / gameHeight * boundaries.y * 2) - boundaries.y;
 
 	float quitX = ((float)(gameWidth / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
-	float quitY = ((float)(gameHeight - (gameHeight * 0.8f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+	float quitY = ((float)(gameHeight - (gameHeight * 0.85f)) / gameHeight * boundaries.y * 2) - boundaries.y;
 
 	float selectX = ((float)(gameWidth / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
 	float selectY = ((float)(gameHeight - (gameHeight * 0.4f)) / gameHeight * boundaries.y * 2) - boundaries.y;
@@ -108,15 +111,18 @@ void SceneMain::Init()
 	title = Create::Entity("GAMETITLE", Vector3(titleX, titleY, 0.f), Vector3(gameWidth*0.04 * (145 / 17), gameWidth*0.04, 5));
 	startbutton = Create::Entity("STARTBUTTON", Vector3(startX, startY, 0.f), Vector3(gameWidth*0.02 * (800/199), gameWidth*0.02, 5));
 	highscorebutton = Create::Entity("HIGHSCORE", Vector3(highscoreX, highscoreY, 0.f), Vector3(gameWidth*0.02 * (800 / 199), gameWidth*0.02, 5));
+	optionsbutton = Create::Entity("OPTIONS", Vector3(OptionsX, OptionsY, 0.f), Vector3(gameWidth*0.02 * (800 / 199), gameWidth*0.02, 5));
 	quitbutton = Create::Entity("QUITBUTTON", Vector3(quitX, quitY, 0.f), Vector3(gameWidth*0.02 * (800 / 199), gameWidth*0.02, 5));
 	selectkey = Create::Entity("SELECT", Vector3(startX, startY, 0.f), Vector3((gameWidth*0.02 * (800 / 199))*1.2f, (gameWidth*0.02)*1.2f, 5));
 	m_activeList.push_back(title);
 	m_activeList.push_back(startbutton);
 	m_activeList.push_back(highscorebutton);
+	m_activeList.push_back(optionsbutton);
 	m_activeList.push_back(quitbutton);
 	m_activeList.push_back(selectkey);
 	selectionList.push_back(startbutton);
 	selectionList.push_back(highscorebutton);
+	selectionList.push_back(optionsbutton);
 	selectionList.push_back(quitbutton);
 	selectIter = selectionList.begin();
 	keypress = 1.f;
@@ -199,6 +205,11 @@ void SceneMain::Update(double dt)
 			SceneManager::GetInstance()->SetActiveSubScene("Quit");
 			showSubScene = true;
 		}
+		else if ((*selectIter) == optionsbutton)
+		{
+			SceneManager::GetInstance()->SetActiveSubScene("Options");
+			showSubScene = true;
+		}
 
 	}
 
@@ -224,7 +235,7 @@ void SceneMain::Update(double dt)
     float worldX = ((float)mousePosition.x / gameWidth * boundaries.x * 2) - boundaries.x;
     float worldY = ((float)(gameHeight - mousePosition.y) / gameHeight * boundaries.y * 2) - boundaries.y;
     ss << "Mouse: " << worldX << ", " << worldY;
-    debuggingMouse->onNotify(ss.str());
+    //debuggingMouse->onNotify(ss.str());
     // For Mouse detection debugging only!
 
 	if (showSubScene)
