@@ -2,8 +2,8 @@
 
 #include <string>
 #include "EntityBase.h"
-#include "../PlayerInfo/PlayerInfo.h"
 
+class CPlayerInfo;
 class GenericComponent
 {
 public:

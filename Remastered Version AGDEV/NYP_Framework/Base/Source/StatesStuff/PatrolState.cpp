@@ -1,5 +1,6 @@
 #include "PatrolState.h"
 #include "../../lua/LuaInterface.h"
+#include "../PlayerInfo/PlayerInfo.h"
 
 #define speed 30
 
@@ -65,12 +66,18 @@ void PatrolState::Update(double dt)
 			isAtWayPoint = false;
 		}
 	}
-
+	
+	if ((zePlayer->thePlayerEntity.GetPosition() - owner_->GetPosition()).LengthSquared() <= 500)
+	{
+		vel.SetZero();
+		FSM_->switchState(1);
+	}
 
 	Vector3 temp = owner_->GetPosition();
 	temp += vel * dt;
 	//float temp777 = Math::RadianToDegree(atan2(vel.z, vel.x));
-	owner_->SetRotation(Math::RadianToDegree(atan2(vel.x, vel.z)));
+	if (!vel.IsZero())
+		owner_->SetRotation(Math::RadianToDegree(atan2(vel.x, vel.z)));
 	owner_->SetPosition(temp);
 }
 

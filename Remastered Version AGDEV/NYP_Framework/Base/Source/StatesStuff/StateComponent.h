@@ -12,6 +12,7 @@ public:
     virtual ~StateComponent() { FSM_ = nullptr; changedName = false; originalOwnerName = ""; influenceRadius = 0; Own_ID_ = 0; };
 
     void setFSM(StateMachineComponent &zeFSM) { FSM_ = &zeFSM; }
+	virtual void Exit(){}
 
 
 protected:

@@ -50,6 +50,7 @@ void StateMachineComponent::addStates(StateComponent &zeStates)
         if (HistoryOfStates.empty())
             HistoryOfStates.push_back(&zeStates);
         zeStates.setEntityOwner(owner_);
+		zeStates.setPlayer(zePlayer);
         zeStates.setFSM(*this);
     }
 }
