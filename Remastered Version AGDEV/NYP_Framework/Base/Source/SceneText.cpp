@@ -434,7 +434,7 @@ void SceneText::Update(double dt)
 		while (LuaInterface::GetInstance()->getFloatValue(str.c_str()))
 		{*/
 
-		}
+		}//
 		
 		for (std::vector<GenericEntity*>::iterator it = m_inactiveList.begin(), end = m_inactiveList.end(); it != end; ++it)
 		{
