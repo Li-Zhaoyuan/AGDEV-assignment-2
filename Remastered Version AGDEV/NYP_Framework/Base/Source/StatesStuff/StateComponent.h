@@ -20,6 +20,7 @@ protected:
     StateMachineComponent *FSM_;
     StateComponent() { FSM_ = nullptr; };
     std::string originalOwnerName;
+	//bool isHitByPlayer;
     bool changedName;
     float influenceRadius;
 };

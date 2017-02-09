@@ -15,6 +15,7 @@
 #include "../TextEntity.h"
 #include "../GenericEntity.h"
 #include <sstream>
+#include "../../lua/LuaInterface.h"
 
 SceneQuit *SceneQuit::cantTouchMain = new SceneQuit(SceneManager::GetInstance());
 
@@ -84,7 +85,7 @@ void SceneQuit::Init()
 
 	gameWidth = Application::GetInstance().GetWindowWidth();
 	gameHeight = Application::GetInstance().GetWindowHeight();
-	Application::GetInstance().hideMouse(false);
+	//Application::GetInstance().hideMouse(false);
 	//	GenericEntity* test = Create::Entity(,,)
 	float worldX = ((float)(gameWidth / 2) / gameWidth * boundaries.x * 2) - boundaries.x;
 	float worldY = ((float)(gameHeight - (gameHeight/2)) / gameHeight * boundaries.y * 2) - boundaries.y;
@@ -92,10 +93,39 @@ void SceneQuit::Init()
 	float startX = ((float)(gameWidth*3 / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
 	float startY = ((float)(gameHeight - (gameHeight * 0.4f)) / gameHeight * boundaries.y * 2) - boundaries.y;
 
+	float msgX = ((float)(gameWidth * 3 / 4) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float msgY = ((float)(gameHeight - (gameHeight * 0.6f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+	
+	float yesX = ((float)(gameWidth * (7) / 8) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float yesY = ((float)(gameHeight - (gameHeight * 0.8f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+
+	float noX = ((float)(gameWidth * (5) / 8) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float noY = ((float)(gameHeight - (gameHeight * 0.8f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+	
+	float selectX = ((float)(gameWidth * (5) / 8) / gameWidth * boundaries.x * 2) - boundaries.x;
+	float selectY = ((float)(gameHeight - (gameHeight * 0.8f)) / gameHeight * boundaries.y * 2) - boundaries.y;
+
 	nyplogo = Create::Entity("LOGO", Vector3(worldX, worldY, 0.f), Vector3(gameWidth*0.1 * (360 / 77), gameWidth*0.1, 5));
 	quit = Create::Entity("QUIT", Vector3(startX, startY, 0.f), Vector3(gameWidth*0.02 * (800 / 199), gameWidth*0.02, 5));
+	areyousure = Create::Entity("AREYOUSURE", Vector3(msgX, msgY, 0.f), Vector3(gameWidth*0.02 * (237 / 38), gameWidth*0.02, 5));
+	yes = Create::Entity("YES", Vector3(yesX, yesY, 0.f), Vector3(gameWidth*0.02 * (800 / 199), gameWidth*0.02, 5));
+	no = Create::Entity("NO", Vector3(noX, noY, 0.f), Vector3(gameWidth*0.02 * (800 / 199), gameWidth*0.02, 5));
+	selectkey = Create::Entity("SELECT", Vector3(selectX, selectY, 0.f), Vector3(gameWidth*0.02 * (800 / 199)* 1.2f, gameWidth*0.02, 5));
 	m_activeList.push_back(quit);
+	m_activeList.push_back(areyousure);
+	m_activeList.push_back(yes);
+	m_activeList.push_back(no);
+	m_activeList.push_back(selectkey);
+
+	selectionList.push_back(no);
+	selectionList.push_back(yes);
+	selectIter = selectionList.begin();
 	timeToChangeScene = 0.f;
+	moveKeyLeft = LuaInterface::GetInstance()->getCharValue("moveLeft2");
+	moveKeyRight = LuaInterface::GetInstance()->getCharValue("moveRight2");
+	moveKeyEnter = LuaInterface::GetInstance()->getCharValue("enterKey");
+
+	keypress = 0.f;
 }
 
 void SceneQuit::Update(double dt)
@@ -125,6 +155,50 @@ void SceneQuit::Update(double dt)
 	debuggingMouse->onNotify(ss.str());
 
 	timeToChangeScene += dt;
+	keypress += dt;
+	if (KeyboardController::GetInstance()->IsKeyDown(moveKeyLeft) && keypress > 0.2f)
+	{
+		//EntityBase* temp = selectionList.popfront();
+		if (selectIter != selectionList.begin())
+		{
+			--selectIter;
+		}
+		else
+		{
+			selectIter = selectionList.end() - 1;
+		}
+		selectkey->SetPosition((*selectIter)->GetPosition());
+		keypress = 0.f;
+
+	}
+	else if (KeyboardController::GetInstance()->IsKeyDown(moveKeyRight) && keypress > 0.2f)
+	{
+
+		if (selectIter != selectionList.end() - 1)
+		{
+			++selectIter;
+		}
+		else
+		{
+			selectIter = selectionList.begin();
+		}
+		selectkey->SetPosition((*selectIter)->GetPosition());
+		keypress = 0.f;
+	}
+
+	if (KeyboardController::GetInstance()->IsKeyDown(moveKeyEnter) && keypress > 0.2f)
+	{
+		if ((*selectIter) == no)
+		{
+			SceneManager::GetInstance()->quitApp = false;
+			//SceneManager::GetInstance()->SetActiveSubScene("Nothing");
+		}
+		else if ((*selectIter) == yes)
+		{
+			SceneManager::GetInstance()->quitApp = true;
+		}
+
+	}
 	if (timeToChangeScene > 2.f)
 	{
 		float changeTheScale = nyplogo->GetScale().y - dt * 100;
@@ -159,6 +233,14 @@ void SceneQuit::Render()
 void SceneQuit::Exit()
 {
 	GraphicsManager::GetInstance()->DetachCamera();
+	selectionList.clear();
+	while (m_activeList.size() > 0)
+	{
+		EntityBase *ex = m_activeList.back();
+		if (ex != NULL)
+			delete ex;
+		m_activeList.pop_back();
+	}
 	// Delete the lights
 	//delete lights[0];
 	//delete lights[1];

@@ -17,6 +17,7 @@ PatrolState::PatrolState()
 	vel.SetZero();
 	isAtWayPoint = false;
 	initWayPoints();
+	//isHitByPlayer = false;
 }
 
 PatrolState::~PatrolState()
@@ -30,12 +31,17 @@ void PatrolState::Update(double dt)
     {
         //owner_ 
     }
-	
+	if (owner_->getFindClosestPoint())
+	{
+		setClosestWaypointtoGo();
+		owner_->setFindClosestPoint(false);
+	}
 	if (owner_->getHealth() < 50)
 	{
 		vel.SetZero();
 		isAtWayPoint = false;
 		FSM_->switchState(2);
+		owner_->setFindClosestPoint(true);
 	}
 	if (!isAtWayPoint)
 	{
@@ -67,11 +73,26 @@ void PatrolState::Update(double dt)
 		}
 	}
 	
-	if ((zePlayer->thePlayerEntity.GetPosition() - owner_->GetPosition()).LengthSquared() <= 500)
+	if ((zePlayer->thePlayerEntity.GetPosition() - owner_->GetPosition()).LengthSquared() <= 1000 || owner_->getisHhitByPlayer())
 	{
 		vel.SetZero();
 		FSM_->switchState(1);
+		owner_->setFindClosestPoint(true);
 	}
+
+	for (std::vector<GenericEntity*>::iterator it = (*m_activeList).begin(); it != (*m_activeList).end(); ++it)
+	{
+		if ((*it)->getName().find("Projectile") != std::string::npos)//find bullet
+		{
+			if (((*it)->GetPosition() - owner_->GetPosition()).LengthSquared() <= 100)
+			{
+				vel.SetZero();
+				FSM_->switchState(1);
+				owner_->setIsHitByPlayer(true);
+			}
+		}
+	}
+	//std::vector<GenericEntity*> y = *m_activeList;
 
 	Vector3 temp = owner_->GetPosition();
 	temp += vel * dt;
@@ -126,4 +147,23 @@ bool PatrolState::onNotify(const float &zeEvent)
 bool PatrolState::onNotify(EntityBase &zeEvent)
 {
     return false;
+}
+
+void PatrolState::setClosestWaypointtoGo()
+{
+	float closest;
+	for (std::vector<Vector3>::iterator it = WayPointsInMap.begin(); it != (WayPointsInMap).end(); ++it)
+	{
+		if (it == WayPointsInMap.begin())
+		{
+			closest = ((*it)- owner_->GetPosition()).LengthSquared();
+			waypointIT = it;
+		}
+		else if (((*it) - owner_->GetPosition()).LengthSquared() < closest)
+		{
+			closest = ((*it) - owner_->GetPosition()).LengthSquared();
+			waypointIT = it;
+		}
+
+	}
 }

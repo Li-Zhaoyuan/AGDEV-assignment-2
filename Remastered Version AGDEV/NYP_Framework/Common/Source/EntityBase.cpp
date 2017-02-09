@@ -4,7 +4,10 @@ EntityBase::EntityBase()
 	: position(0.0f, 0.0f, 0.0f)
 	, scale(1.0f, 1.0f, 1.0f)
 	, rotation(0)
+	, rotation2(0)
 	, health(0)
+	, findClosestPoint(false)
+	, isHitByPlayer(false)
 	, isDone(false)
 	, isShot(true)
 	, m_bCollider(false)
@@ -249,4 +252,22 @@ int EntityBase::getHealth()
 void EntityBase::setHealth(int h)
 {
 	health = h;
+}
+
+bool EntityBase::getisHhitByPlayer()
+{
+	return isHitByPlayer;
+}
+void EntityBase::setIsHitByPlayer(bool toggle)
+{
+	isHitByPlayer = toggle;
+}
+
+bool EntityBase::getFindClosestPoint()
+{
+	return findClosestPoint;
+}
+void EntityBase::setFindClosestPoint(bool toggle)
+{
+	findClosestPoint = toggle;
 }

@@ -226,7 +226,7 @@ void SceneText::Init()
 	float halfFontSize = fontSize / 2.0f;
 	for (int i = 0; i < 2; ++i)
 	{
-		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
+		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize*2, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
     // For Score
     textObj[2] = Create::Text2DObject("text", Vector3(-halfWindowWidth, halfWindowHeight - halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.f, 1.f, 0.f));
@@ -253,15 +253,23 @@ void SceneText::Init()
         zeBullet->onNotify(m_activeList);
     }
     health_ = 100;
-    timeLeft_Second = 120;
+    timeLeft_Second = 0.f;
 	timeTillSateliteRDY = 5;
     currGameState = PLAYING;
 	startAnimation = false;
     playerInfo->setBoundary(boundaryOfScene->GetScale());
 
 	theGun = Create::Gun("Gun", Vector3(playerInfo->GetCurrCamera().GetCameraPos().x, playerInfo->GetCurrCamera().GetCameraPos().y, playerInfo->GetCurrCamera().GetCameraPos().z));
-
-	m_activeList.push_back(AI_Builder::createSimpleAI(Vector3(0, 0, 0), Vector3(1, 1, 1), playerInfo));
+	theAIShip = AI_Builder::createSimpleAI(Vector3(0, 0, 0), Vector3(1, 1, 1), playerInfo,&m_activeList);
+	m_activeList.push_back(theAIShip);
+	shipIT = m_activeList.end()-1;
+	keyLag = 0.f;
+	whichSubScene = 0;
+	subSceneUp=LuaInterface::GetInstance()->getCharValue("moveUp");
+	subSceneDown=LuaInterface::GetInstance()->getCharValue("moveDown");
+	showSubscene = true;
+	SceneManager::GetInstance()->SetActiveSubScene("Nothing");
+	hasChangedSubScene = false;
 }
 
 void SceneText::Update(double dt)
@@ -327,7 +335,8 @@ void SceneText::Update(double dt)
 	
 	if(KeyboardController::GetInstance()->IsKeyDown('5'))
 	{
-		lights[0]->type = Light::LIGHT_POINT;
+		//showSubscene = true;
+		//SceneManager::GetInstance()->SetActiveSubScene("HighScore");
 	}
 	else if(KeyboardController::GetInstance()->IsKeyDown('6'))
 	{
@@ -395,13 +404,44 @@ void SceneText::Update(double dt)
 	// Update the player position into textObj[2]
 	std::ostringstream ss1;
 	ss1.precision(4);
-	ss1 << "Player:" << playerInfo->GetCurrCamera().GetCameraPos();
+	//ss1 << "Player:" << playerInfo->GetCurrCamera().GetCameraPos();
+	ss1 << "Player:" << playerInfo->thePlayerEntity.getHealth();
 	textObj[1]->SetText(ss1.str());
+	if (playerInfo->thePlayerEntity.getHealth() <= 0)//reset player die
+	{
+		//save the time survived
+		playerInfo->thePlayerEntity.SetPosition(Vector3(0, 0, 0));
+		playerInfo->thePlayerEntity.setHealth(100); 
+		theAIShip->setHealth(100);
+		timeLeft_Second = 0;
+
+	}
+	if (theAIShip->getHealth() <= 0)//ship gone
+	{
+		playerInfo->thePlayerEntity.SetPosition(Vector3(0, 0, 0));
+		playerInfo->thePlayerEntity.setHealth(100);
+		theAIShip->setHealth(100);
+		timeLeft_Second = 0;
+		theAIShip->SetIsDone(false);
+		theAIShip->SetIsShot(false);
+		
+		for (std::vector<GenericEntity*>::iterator it = m_inactiveList.begin(), end = m_inactiveList.end(); it != end; ++it)
+		{
+			if ((*it) == theAIShip)
+			{
+				m_activeList.push_back(*it);
+				m_inactiveList.erase(it);
+				break;
+			}
+
+		}
+
+	}
 
     switch (currGameState)
     {
     case PLAYING:
-        timeLeft_Second -= (float)(dt);
+        timeLeft_Second += (float)(dt);
         if (timeLeft_Second <= Math::EPSILON || health_ <= Math::EPSILON)
         {
 			float timeSurvived = 120 - timeLeft_Second;
@@ -422,7 +462,7 @@ void SceneText::Update(double dt)
         else
         {
             ss1.str("");
-            ss1 << "Ship's health:" << health_;
+            ss1 << "Ship's health:" << theAIShip->getHealth();
             textObj[2]->SetText(ss1.str());
 
             ss1.str("");
@@ -430,7 +470,7 @@ void SceneText::Update(double dt)
             textObj[3]->SetText(ss1.str());
 
             ss1.str("");
-            ss1 << "TimeLeft:" << timeLeft_Second;
+            ss1 << "Time:" << timeLeft_Second;
             textObj[4]->SetText(ss1.str());
 
 			ss1.str("");
@@ -523,6 +563,49 @@ void SceneText::Update(double dt)
     default:
         break;
     }
+	keyLag += dt;
+	if (KeyboardController::GetInstance()->IsKeyDown(subSceneUp) && keyLag > 0.2f)
+	{
+		whichSubScene += 1;
+		if (whichSubScene > 2)
+		{
+			whichSubScene = 2;
+		}
+		hasChangedSubScene = true;
+		keyLag = 0.f;
+	}
+	if (KeyboardController::GetInstance()->IsKeyDown(subSceneDown) && keyLag > 0.2f)
+	{
+		whichSubScene -= 1;
+		if (whichSubScene < 0)
+		{
+			whichSubScene = 0;
+		}
+		hasChangedSubScene = true;
+		keyLag = 0.f;
+	}
+
+	if (hasChangedSubScene)
+	{
+		switch (whichSubScene)
+		{
+		case 0:
+			SceneManager::GetInstance()->SetActiveSubScene("Nothing");
+			break;
+		case 1:
+			SceneManager::GetInstance()->SetActiveSubScene("HighScore");
+			break;
+		case 2:
+			SceneManager::GetInstance()->SetActiveSubScene("Quit");
+			break;
+		defualt:
+			SceneManager::GetInstance()->SetActiveSubScene("Nothing");
+			break;
+		}
+		hasChangedSubScene = false;
+	}
+	if (showSubscene)
+		SceneManager::GetInstance()->UpdateSub(dt);
 }
 
 void SceneText::Render()
@@ -569,6 +652,16 @@ void SceneText::Render()
 	textObj[5]->RenderUI();
 	textObj[6]->RenderUI();
 	textObj[7]->RenderUI();
+	Vector3 bounds(400, 300, 10);
+	GraphicsManager::GetInstance()->SetOrthographicProjection(-bounds.x, bounds.x, -bounds.y, bounds.y, -bounds.z, bounds.z);
+	//GraphicsManager::GetInstance()->AttachCamera(&mainCamera);
+
+	
+	if (whichSubScene != 0)
+	{
+		if (showSubscene)
+			SceneManager::GetInstance()->RenderSub();
+	}
 }
 
 void SceneText::Exit()
@@ -635,7 +728,7 @@ void SceneText::resetGame()
 	startAnimation = false;
 	timeTillSateliteRDY = 5;
     health_ = 100;
-    timeLeft_Second = 120;
+    timeLeft_Second = 0;
     currGameState = PLAYING;
     textObj[5]->SetText("");
     textObj[6]->SetText("");
@@ -687,11 +780,13 @@ void SceneText::resetGame()
 		x1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10);
 		y1 = Math::RandFloatMinMax(2, 3);
 		z1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10);
-		CreateSatelite2(Vector3(Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10), Math::RandFloatMinMax(2, 3), Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10)), Vector3(1, 1, 1));
+		CreateSatelite2(Vector3(x1, y1, z1), Vector3(1, 1, 1));
 		std::string str = "satelite";
 		str.append(std::to_string(i + 2));
 		LuaInterface::GetInstance()->saveCoordToFile(LuaInterface::GetInstance()->theLuaState, str.c_str(), x1, y1, z1);
 	}
+	theAIShip = AI_Builder::createSimpleAI(Vector3(0, 0, 0), Vector3(1, 1, 1), playerInfo, &m_activeList);
+	m_activeList.push_back(theAIShip);
 	ROCK_ID = 0;
 }
 

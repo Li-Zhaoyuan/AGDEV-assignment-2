@@ -24,6 +24,9 @@ public:
 	inline void SetRotation(const float& _value){ rotation = _value; };
 	inline float GetRotation(){ return rotation; };
 
+	inline void SetRotation2(const float& _value){ rotation2 = _value; };
+	inline float GetRotation2(){ return rotation2; };
+
 	bool IsDone();
 	void SetIsDone(const bool &_value);
 
@@ -57,12 +60,19 @@ public:
 	int getHealth();
 	void setHealth(int i);
 
+	bool getisHhitByPlayer();
+	void setIsHitByPlayer(bool toggle);
+
+	bool getFindClosestPoint();
+	void setFindClosestPoint(bool toggle);
+
 protected:
 	Vector3 position;
 	Vector3 scale;
 	float rotation;
+	float rotation2;
 
-	bool isDone,isShot;
+	bool isDone,isShot,isHitByPlayer,findClosestPoint;
 	bool m_bCollider;
     std::string name_;
 	int health;

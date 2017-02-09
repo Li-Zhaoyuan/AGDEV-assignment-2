@@ -2,8 +2,10 @@
 
 #include <string>
 #include "EntityBase.h"
+#include <vector>
 
 class CPlayerInfo;
+class GenericEntity;
 class GenericComponent
 {
 public:
@@ -19,6 +21,8 @@ public:
     void setName(const std::string zeName);
     void setEntityOwner(EntityBase *zeOwner);
 	void setPlayer(CPlayerInfo *player);
+	void setVectorOfBullets(std::vector<GenericEntity*> *m_activeList);
+	void setIsHitByPlayer(bool toggle);
 
     virtual bool onNotify(const std::string &zeEvent) { return false; };
     virtual bool onNotify(const int &zeEvent) { return false; };
@@ -29,9 +33,13 @@ public:
     std::string getName();
     EntityBase *getOwner();
 	CPlayerInfo *getPlayer();
+	std::vector<GenericEntity*> getVectorOfBullets();
+	bool getIsHitByPlayer();
 
 protected:
     std::string name_;
     EntityBase *owner_;
 	CPlayerInfo *zePlayer;
+	std::vector<GenericEntity*> *m_activeList;
+	//bool isHitByPlayer = false;
 };

@@ -39,6 +39,8 @@ public:
 	Scene *GetCurrSubScene() { return activeSubScene; }
 	bool TransitPreviousSubScene();
 
+	bool quitApp;
+
 private:
 	SceneManager();
 	virtual ~SceneManager();

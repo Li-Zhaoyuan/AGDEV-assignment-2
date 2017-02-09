@@ -28,6 +28,8 @@ protected:
 	ShaderProgram* currProg;
 
 	std::vector<EntityBase*> m_activeList;
+	std::vector<EntityBase*> selectionList;
+	std::vector<EntityBase *>::iterator selectIter;
 	EntityBase *debuggingMouse; // just to debug the mouse position! Will remove as soon as I am done debugging it!
 	// boundaries will act as the right, top, far!
 	Vector3 boundaries;
@@ -35,4 +37,14 @@ protected:
 	float timeToChangeScene;
 	EntityBase* nyplogo;
 	EntityBase* quit;
+	EntityBase* areyousure;
+	EntityBase* yes;
+	EntityBase* no;
+	EntityBase * selectkey;
+
+	char moveKeyLeft;
+	char moveKeyRight;
+	char moveKeyEnter;
+
+	float keypress;
 };

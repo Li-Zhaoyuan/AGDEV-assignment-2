@@ -52,6 +52,8 @@ private:
 	SceneNode* forthNode_s;
 
     std::vector<GenericEntity*> m_activeList, m_inactiveList;
+	std::vector<GenericEntity*>::iterator shipIT;
+	GenericEntity* theAIShip;
     std::vector<size_t> waitingListToBeRemoved;
     EntityBase *boundaryOfScene;
 
@@ -59,6 +61,15 @@ private:
     int health_;
     float timeLeft_Second;
 	float timeTillSateliteRDY;
+
+	bool showSubscene;
+
+	bool hasChangedSubScene;
+	int whichSubScene;
+	float keyLag;
+
+	char subSceneUp;
+	char subSceneDown;
 
 
     enum GAME_STATES

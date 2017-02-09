@@ -84,7 +84,7 @@ void SceneHighScore::Init()
 
 	gameWidth = Application::GetInstance().GetWindowWidth();
 	gameHeight = Application::GetInstance().GetWindowHeight();
-	Application::GetInstance().hideMouse(false);
+	//Application::GetInstance().hideMouse(false);
 	//	GenericEntity* test = Create::Entity(,,)
 	float worldX = ((float)(gameWidth / 2) / gameWidth * boundaries.x * 2) - boundaries.x;
 	float worldY = ((float)(gameHeight - (gameHeight/2)) / gameHeight * boundaries.y * 2) - boundaries.y;

@@ -51,6 +51,8 @@ void StateMachineComponent::addStates(StateComponent &zeStates)
             HistoryOfStates.push_back(&zeStates);
         zeStates.setEntityOwner(owner_);
 		zeStates.setPlayer(zePlayer);
+		zeStates.setVectorOfBullets(m_activeList);
+		//zeStates.setIsHitByPlayer(isHitByPlayer);
         zeStates.setFSM(*this);
     }
 }

@@ -1,4 +1,5 @@
 #include "GenericComponent.h"
+#include "../GenericEntity.h"
 
 
 GenericComponent::GenericComponent()
@@ -65,3 +66,19 @@ CPlayerInfo *GenericComponent::getPlayer()
 {
 	return zePlayer;
 }
+void GenericComponent::setVectorOfBullets(std::vector<GenericEntity*> *m_activeList)
+{
+	this->m_activeList = m_activeList;
+}
+std::vector<GenericEntity*> GenericComponent::getVectorOfBullets()
+{
+	return *m_activeList;
+}
+//void GenericComponent::setIsHitByPlayer(bool toggle)
+//{
+//	isHitByPlayer = toggle;
+//}
+//bool GenericComponent::getIsHitByPlayer()
+//{
+//	return isHitByPlayer;
+//}

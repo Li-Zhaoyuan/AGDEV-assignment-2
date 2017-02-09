@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-SceneManager::SceneManager() : activeScene(nullptr), activeSubScene(nullptr)/*, nextScene(nullptr)*/
+SceneManager::SceneManager() : activeScene(nullptr), activeSubScene(nullptr), quitApp(false)/*, nextScene(nullptr)*/
 {
 }
 

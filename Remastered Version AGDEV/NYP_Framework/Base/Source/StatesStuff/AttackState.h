@@ -20,4 +20,6 @@ public:
 protected:
     EntityBase *thePlayer;
 	Vector3 vel;
+
+	float attackCooldown;
 };

@@ -20,6 +20,7 @@ public:
     virtual bool onNotify(EntityBase &zeEvent);
 
 	void initWayPoints();
+	void setClosestWaypointtoGo();
 
 private:
     std::list<Vector3> AllWayPoints;

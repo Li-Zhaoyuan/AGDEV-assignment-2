@@ -33,6 +33,7 @@
     <ClCompile Include="Source\SceneGraph\UpdateTransformation.cpp" />
     <ClCompile Include="Source\Scenes\SceneHighScore.cpp" />
     <ClCompile Include="Source\Scenes\SceneMain.cpp" />
+    <ClCompile Include="Source\Scenes\SceneNothing.cpp" />
     <ClCompile Include="Source\Scenes\SceneQuit.cpp" />
     <ClCompile Include="Source\Scenes\SceneSplash.cpp" />
     <ClCompile Include="Source\SceneText.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="Source\StatesStuff\AttackState.cpp" />
     <ClCompile Include="Source\StatesStuff\EscapeState.cpp" />
     <ClCompile Include="Source\StatesStuff\GenericComponent.cpp" />
+    <ClCompile Include="Source\StatesStuff\HealState.cpp" />
     <ClCompile Include="Source\StatesStuff\PatrolState.cpp" />
     <ClCompile Include="Source\StatesStuff\StateMachineComponent.cpp" />
     <ClCompile Include="Source\TextEntity.cpp" />
@@ -78,6 +80,7 @@
     <ClInclude Include="Source\SceneGraph\UpdateTransformation.h" />
     <ClInclude Include="Source\Scenes\SceneHighScore.h" />
     <ClInclude Include="Source\Scenes\SceneMain.h" />
+    <ClInclude Include="Source\Scenes\SceneNothing.h" />
     <ClInclude Include="Source\Scenes\SceneQuit.h" />
     <ClInclude Include="Source\Scenes\SceneSplash.h" />
     <ClInclude Include="Source\SceneText.h" />
@@ -86,6 +89,7 @@
     <ClInclude Include="Source\StatesStuff\AttackState.h" />
     <ClInclude Include="Source\StatesStuff\EscapeState.h" />
     <ClInclude Include="Source\StatesStuff\GenericComponent.h" />
+    <ClInclude Include="Source\StatesStuff\HealState.h" />
     <ClInclude Include="Source\StatesStuff\PatrolState.h" />
     <ClInclude Include="Source\StatesStuff\StateComponent.h" />
     <ClInclude Include="Source\StatesStuff\StateMachineComponent.h" />

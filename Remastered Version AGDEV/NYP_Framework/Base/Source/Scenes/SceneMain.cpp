@@ -243,6 +243,7 @@ void SceneMain::Render()
     {
         (*it)->Render();
     }
+
 	if (showSubScene)
 		SceneManager::GetInstance()->RenderSub();
 }
@@ -250,7 +251,15 @@ void SceneMain::Render()
 void SceneMain::Exit()
 {
     GraphicsManager::GetInstance()->DetachCamera();
-    // Delete the lights
+	selectionList.clear();
+	while (m_activeList.size() > 0)
+	{
+		EntityBase *ex = m_activeList.back();
+		if (ex != NULL)
+			delete ex;
+		m_activeList.pop_back();
+	}
+	// Delete the lights
     //delete lights[0];
     //delete lights[1];
 }
