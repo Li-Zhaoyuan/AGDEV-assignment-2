@@ -3,6 +3,7 @@
 EntityBase::EntityBase() 
 	: position(0.0f, 0.0f, 0.0f)
 	, scale(1.0f, 1.0f, 1.0f)
+	, health(0)
 	, isDone(false)
 	, isShot(true)
 	, m_bCollider(false)
@@ -237,4 +238,14 @@ bool EntityBase::operator==(const EntityBase &rhs)
 bool EntityBase::operator!=(const EntityBase &rhs)
 {
     return !(*this == rhs);
+}
+
+int EntityBase::getHealth()
+{
+	return health;
+}
+
+void EntityBase::setHealth(int h)
+{
+	health = h;
 }

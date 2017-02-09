@@ -6,6 +6,7 @@ bool LuaInterface::Init()
 {
     // Create lua state
     theLuaState = lua_open();
+	//theWayPointState = lua_open();
 	//theLuaForMeshs = lua_open();
     if (theLuaState)
     {
@@ -72,11 +73,9 @@ char LuaInterface::getCharValue(const char* key)
 	lua_getglobal(theLuaState, key);
 
 	size_t len;
-	std::string str = lua_tostring(theLuaState, -1);
+	int str = lua_tointeger(theLuaState, -1);
 
-
-	return str.c_str()[0];
-	
+	return (char)str;
 }
 
 Vector3 LuaInterface::getVector3Value(const char* key)
@@ -105,23 +104,23 @@ std::string LuaInterface::getStringValue(const char* key)
 	return str;
 }
 
-void LuaInterface::saveIntValue(const char *varName, const int &zeValue)
+void LuaInterface::saveIntValue(const char *varName, const int &zeValue , bool toRefresh)
 {
     lua_getglobal(theLuaState, "SaveToLuaFile");
     char outputString[80];
     sprintf_s(outputString, "%s %d\n", varName, zeValue);
     lua_pushstring(theLuaState, outputString);
-    lua_pushinteger(theLuaState, 1);
+	lua_pushinteger(theLuaState, toRefresh);
     lua_call(theLuaState, 2, 0);
 }
 
-void LuaInterface::saveFloatValue(const char *varName, const float &zeValue)
+void LuaInterface::saveFloatValue(const char *varName, const float &zeValue, bool toRefresh)
 {
     lua_getglobal(theLuaState, "SaveToLuaFile");
     char outputString[80];
     sprintf_s(outputString, "%s %6.4f\n", varName, zeValue);
     lua_pushstring(theLuaState, outputString);
-    lua_pushinteger(theLuaState, 1);
+	lua_pushinteger(theLuaState, toRefresh);
     lua_call(theLuaState, 2, 0);
 }
 
@@ -149,6 +148,30 @@ float LuaInterface::getField(char *zeKey)
     return result;
 }
 
+float LuaInterface::getField(lua_State *l,char *zeKey)
+{
+	float result;
+
+	// Check if the variable in the Lua stack belongs to a table
+	if (!lua_istable(l, -1))
+	{
+		putError("error100");
+		return 0;
+	}
+
+	lua_pushstring(l, zeKey);
+	lua_gettable(l, -2);
+	if (!lua_isnumber(l, -1))
+	{
+		putError("error101");
+		return 0;
+	}
+
+	result = (float)lua_tonumber(l, -1);
+	lua_pop(l, 1);
+	return result;
+}
+
 void LuaInterface::putError(char *zeErrorCode)
 {
     if (!zeErrorCode)
@@ -160,4 +183,35 @@ void LuaInterface::putError(char *zeErrorCode)
         std::cout << errorMsg << std::endl;
     else
         std::cout << zeErrorCode << " is not valid!" << std::endl;
+}
+
+void LuaInterface::saveCoordToFile(lua_State *l, const char *varName, float x, float y, float z, bool toFresh)
+{
+	lua_getglobal(l, "SaveToLuaFileForCoord");
+	//char outputString[80];
+	std::string str,valuex,valuey,valuez;
+	str = varName;
+	valuex = "x = ";
+	valuex.append(std::to_string(x));
+
+	valuey = "y = ";
+	valuey.append(std::to_string(y));
+
+	valuez = "z = ";
+	valuez.append(std::to_string(z));
+
+
+	str.append("= { ");
+	str.append(valuex);
+	str.append(",");
+	str.append(valuey);
+	str.append(",");
+	str.append(valuez);
+	str.append("} \n");
+	//Waypoint_A_1 = { x = 10.0, y = 0.0, z = 50.0 }
+
+	//sprintf_s(outputString, "%s %d\n", varName, zeValue);
+	lua_pushstring(theLuaState, str.c_str());
+	lua_pushinteger(theLuaState, toFresh);
+	lua_call(theLuaState, 2, 0);
 }

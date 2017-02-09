@@ -19,10 +19,15 @@ public:
     virtual bool onNotify(const float &zeEvent);
     virtual bool onNotify(EntityBase &zeEvent);
 
+	void initWayPoints();
+
 private:
     std::list<Vector3> AllWayPoints;
-    std::vector<Vector3> *WayPointsInMap;
+    std::vector<Vector3> WayPointsInMap;
+	std::vector<Vector3>::iterator waypointIT;
     size_t IndexOfWaypoint;
     float wayPtInfluenceSq;   // Helps to offset if the entity have reached the destination more or less
     EntityBase *thePlayer_;
+	Vector3 vel;
+	bool isAtWayPoint;
 };

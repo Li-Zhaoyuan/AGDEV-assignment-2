@@ -15,6 +15,7 @@
 #include "../TextEntity.h"
 #include "../GenericEntity.h"
 #include <sstream>
+#include "../../lua/LuaInterface.h"
 
 SceneMain *SceneMain::cantTouchMain = new SceneMain(SceneManager::GetInstance());
 
@@ -22,6 +23,9 @@ SceneMain::SceneMain(SceneManager *zeSceneManager)
 {
     Scene_name_ = "Main";
     zeSceneManager->AddScene(Scene_name_, this);
+	moveKeyUp = 'W';
+	moveKeyDown = 'S';
+	moveKeyEnter = (char)13;
 }
 
 SceneMain::~SceneMain()
@@ -119,6 +123,9 @@ void SceneMain::Init()
 	showSubScene = false;
 	titleScale = 0.f;
 	
+	moveKeyUp = LuaInterface::GetInstance()->getCharValue("moveUp");
+	moveKeyDown = LuaInterface::GetInstance()->getCharValue("moveDown");
+	moveKeyEnter = LuaInterface::GetInstance()->getCharValue("enterKey");
 	/*startbutton;
 	highscorebutton;
 	quitbutton;
@@ -144,7 +151,7 @@ void SceneMain::Update(double dt)
         SceneManager::GetInstance()->SetActiveScene("Start");
     }
 	keypress += dt;
-	if (KeyboardController::GetInstance()->IsKeyDown('W') && keypress > 0.2f)
+	if (KeyboardController::GetInstance()->IsKeyDown(moveKeyUp) && keypress > 0.2f)
 	{
 		//EntityBase* temp = selectionList.popfront();
 		if (selectIter != selectionList.begin())
@@ -159,7 +166,7 @@ void SceneMain::Update(double dt)
 		keypress = 0.f;
 
 	}
-	else if (KeyboardController::GetInstance()->IsKeyDown('S') && keypress > 0.2f)
+	else if (KeyboardController::GetInstance()->IsKeyDown(moveKeyDown) && keypress > 0.2f)
 	{
 		
 		if (selectIter != selectionList.end() - 1)
@@ -174,7 +181,7 @@ void SceneMain::Update(double dt)
 		keypress = 0.f;
 	}
 
-	if (KeyboardController::GetInstance()->IsKeyDown((char)13) && keypress > 0.2f)
+	if (KeyboardController::GetInstance()->IsKeyDown(moveKeyEnter) && keypress > 0.2f)
 	{
 		if ((*selectIter) == startbutton)
 		{

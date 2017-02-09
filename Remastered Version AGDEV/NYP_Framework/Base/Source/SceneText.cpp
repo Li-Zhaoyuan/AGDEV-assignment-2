@@ -28,6 +28,7 @@
 #include "MyMath.h"
 #include "MusicsStuff\MusicSystem.h"
 #include "AI_Builder.h"
+#include "../lua/LuaInterface.h"
 
 
 #include <iostream>
@@ -165,8 +166,17 @@ void SceneText::Init()
  //   m_activeList.push_back(aCube);
 
 	//debuging for scene graph, START
+	float x1, y1, z1;
 
-	CreateSatelite(Vector3(Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10), Math::RandFloatMinMax(2, 3), Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10)), Vector3(1, 1, 1));
+	x1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10);
+	y1 = Math::RandFloatMinMax(2, 3);
+	z1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10);
+
+	CreateSatelite(Vector3(x1, y1, z1), Vector3(1, 1, 1));
+	std::string str2 = "satelite";
+	str2.append(std::to_string(1));
+	LuaInterface::GetInstance()->saveCoordToFile(LuaInterface::GetInstance()->theLuaState, str2.c_str(), x1, y1, z1,true);
+
 
 	// I am testing out scene graph animation
 	CreatePlanet(Vector3(100, 0, 0), Vector3(25, 25, 25));
@@ -178,7 +188,15 @@ void SceneText::Init()
 	
 	for (int i = 0; i < 2; ++i)
 	{
+		//float x1, y1, z1;
+
+		x1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10);
+		y1 = Math::RandFloatMinMax(2, 3);
+		z1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10);
 		CreateSatelite2(Vector3(Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10), Math::RandFloatMinMax(2, 3), Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10)), Vector3(1, 1, 1));
+		std::string str = "satelite";
+		str.append(std::to_string(i + 2));
+		LuaInterface::GetInstance()->saveCoordToFile(LuaInterface::GetInstance()->theLuaState,str.c_str(), x1, y1, z1);
 	}
 	
 	//debuging for scene graph, END
@@ -223,6 +241,8 @@ void SceneText::Init()
     textObj[6] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -fontSize * 2, 0), "", Vector3(fontSize * 2, fontSize * 2, fontSize), Color(0, 1, 0));
     // For GameOver Screen
 
+	//m_activeList.push_back(textObj[0]);
+
     for (size_t num = 0; num < 100; ++num)
     {
         Projectile *zeBullet = new Projectile();
@@ -240,6 +260,8 @@ void SceneText::Init()
     playerInfo->setBoundary(boundaryOfScene->GetScale());
 
 	theGun = Create::Gun("Gun", Vector3(playerInfo->GetCurrCamera().GetCameraPos().x, playerInfo->GetCurrCamera().GetCameraPos().y, playerInfo->GetCurrCamera().GetCameraPos().z));
+
+	m_activeList.push_back(AI_Builder::createSimpleAI(Vector3(0, 0, 0), Vector3(1, 1, 1)));
 }
 
 void SceneText::Update(double dt)
@@ -522,6 +544,16 @@ void SceneText::Render()
 			(*it)->Render();
     }
 
+	
+	
+	
+	
+	
+	
+	
+	
+
+
 
 	// Setup 2D pipeline then render 2D
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
@@ -529,6 +561,14 @@ void SceneText::Render()
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
+	textObj[0]->RenderUI();
+	textObj[1]->RenderUI();
+	textObj[2]->RenderUI();
+	textObj[3]->RenderUI();
+	textObj[4]->RenderUI();
+	textObj[5]->RenderUI();
+	textObj[6]->RenderUI();
+	textObj[7]->RenderUI();
 }
 
 void SceneText::Exit()
@@ -628,11 +668,29 @@ void SceneText::resetGame()
 	CreateAsteroid(Vector3(Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10), Math::RandFloatMinMax(2, 3), Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10)), Vector3(1, 1, 1));
 	CreateAsteroid(Vector3(Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10), Math::RandFloatMinMax(2, 3), Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10)), Vector3(1, 1, 1));
 	
-	CreateSatelite(Vector3(Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10), Math::RandFloatMinMax(2, 3), Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10)), Vector3(1, 1, 1));
+	float x1, y1, z1;
+
+	x1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10);
+	y1 = Math::RandFloatMinMax(2, 3);
+	z1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10);
+
+	CreateSatelite(Vector3(x1, y1, z1), Vector3(1, 1, 1));
+	std::string str2 = "satelite";
+	str2.append(std::to_string(1));
+	LuaInterface::GetInstance()->saveCoordToFile(LuaInterface::GetInstance()->theLuaState, str2.c_str(), x1, y1, z1, true);
+
 	CreatePlanet(Vector3(100, 0, 0), Vector3(25, 25, 25));
 	for (int i = 0; i < 2; ++i)
 	{
+		//float x1, y1, z1;
+
+		x1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10);
+		y1 = Math::RandFloatMinMax(2, 3);
+		z1 = Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10);
 		CreateSatelite2(Vector3(Math::RandFloatMinMax(-boundaryOfScene->GetScale().x / 10, boundaryOfScene->GetScale().x / 10), Math::RandFloatMinMax(2, 3), Math::RandFloatMinMax(-boundaryOfScene->GetScale().z / 10, boundaryOfScene->GetScale().z / 10)), Vector3(1, 1, 1));
+		std::string str = "satelite";
+		str.append(std::to_string(i + 2));
+		LuaInterface::GetInstance()->saveCoordToFile(LuaInterface::GetInstance()->theLuaState, str.c_str(), x1, y1, z1);
 	}
 	ROCK_ID = 0;
 }

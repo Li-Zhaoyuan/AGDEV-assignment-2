@@ -251,11 +251,12 @@ void Application::Init()
     Vector3 testingDebugWaypoint1(LuaInterface::GetInstance()->getField("x"), LuaInterface::GetInstance()->getField("y"), LuaInterface::GetInstance()->getField("z"));
     std::cout << "Wapoint 1: " << testingDebugWaypoint1 << std::endl;
     m_lockMouse = false;
+	
 }
 
 void Application::Run()
 {
-	SceneManager::GetInstance()->SetActiveScene("Main");
+	SceneManager::GetInstance()->SetActiveScene("Splash");
 	SceneManager::GetInstance()->SetActiveSubScene("HighScore");
     // Active Window Detection
     HWND hwnd = GetActiveWindow();

@@ -31,17 +31,40 @@ function SaveSpecificValue(zeKey, zeValue)
 	-- After loading from file, then close the handle!
 	fileHandle:close()
 end
+
+function SaveToLuaFileForCoord(outputString, overwrite)
+   print("SaveToLuaFileForCoord...")
+   local f;						-- The file
+   if overwrite == 1 then		-- Wipe the contents with new data
+      f = assert(io.open("lua/waypointpos.lua", "w"))
+   elseif overwrite == 0 then	-- Append with new data
+      f = assert(io.open("lua/waypointpos.lua", "a"))
+   end
+   -- Write to the file
+   f:write(outputString)
+   -- Close the file
+   f:close()
+   print("OK")
+end
 --if wan dont wan to scale the screen to moniter change the 0 value
 title = "DM2240 - Week 14 Scripting"
 width = 0
 height = 0
 --keyboard
-moveForward = "W"
-moveBackward = "S"
-moveLeft = "A"
-moveRight = "D"
-reload = "E"
-reset = "P"
+moveForward = 87
+moveBackward = 83
+moveLeft = 65
+moveRight = 68
+
+moveUp = 38
+moveDown = 40
+moveLeft2 = 37
+moveRight2 = 39
+
+enterKey = 13
+
+reload = 69
+reset = 80
 
 --player
 fireRate = 0.2
@@ -49,3 +72,5 @@ ammo = 15
 maxclip = 1
 
 Waypoint_A_1 = { x = 10.0, y = 0.0, z = 50.0 }
+test{1,0,3}
+

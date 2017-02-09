@@ -41,6 +41,10 @@ protected:
 	std::vector<EntityBase *> selectionList;
 	std::vector<EntityBase *>::iterator selectIter;
 
+	char moveKeyUp;
+	char moveKeyDown;
+	char moveKeyEnter;
+
 	float keypress;
 	float titleScale;
 

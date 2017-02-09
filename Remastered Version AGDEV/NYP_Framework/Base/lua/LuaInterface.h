@@ -19,16 +19,20 @@ public:
 	Vector3 getVector3Value(const char* key);
 	std::string getStringValue(const char* key);
 
-    void saveIntValue(const char *varName, const int &zeValue);
-    void saveFloatValue(const char *varName, const float &zeValue);
+	void saveIntValue(const char *varName, const int &zeValue, bool toFresh = false);
+	void saveFloatValue(const char *varName, const float &zeValue, bool toFresh = false);
+
+	void saveCoordToFile(lua_State *l, const char *varName, float x, float y, float z, bool toFresh = false);
 
     float getField(char *zeKey);
+	float getField(lua_State *l, char *zeKey);
     void putError(char *zeErrorCode);
 	
 
     lua_State *theLuaState;
 	lua_State *theLuaForMeshs;
     lua_State *theErrorState;
+	lua_State *theWayPointState;
 
 protected:
     LuaInterface() { theLuaState = nullptr;  }
@@ -38,5 +42,20 @@ protected:
             lua_close(theLuaState);
             theLuaState = nullptr;
         }
+		if (theLuaForMeshs)
+		{
+			lua_close(theLuaForMeshs);
+			theLuaForMeshs = nullptr;
+		}
+		if (theErrorState)
+		{
+			lua_close(theErrorState);
+			theErrorState = nullptr;
+		}
+		if (theWayPointState)
+		{
+			lua_close(theWayPointState);
+			theWayPointState = nullptr;
+		}
     }
 };

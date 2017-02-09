@@ -51,7 +51,8 @@ public:
     bool operator==(const EntityBase &rhs);
     bool operator!=(const EntityBase &rhs);
 
-
+	int getHealth();
+	void setHealth(int i);
 
 protected:
 	Vector3 position;
@@ -60,6 +61,7 @@ protected:
 	bool isDone,isShot;
 	bool m_bCollider;
     std::string name_;
+	int health;
     //union Vector3Union
     //{
     //    int ActualValue;                        // ^^^^^^^^ ^^^^^^^^ ^^^^^^^^ ^^^^^^^^ This is all Actual Value

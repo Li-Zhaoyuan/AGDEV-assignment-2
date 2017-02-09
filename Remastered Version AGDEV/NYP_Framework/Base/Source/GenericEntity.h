@@ -29,10 +29,13 @@ public:
 	//bool isVisable()
     StateMachineComponent FSM_;
 
+	
+
 protected:
 	Mesh* modelMesh;
     EntityBase *boundary_;
     unsigned char howManyLives;
+	
 
 	bool isVisible;
 	bool isKilledByBullet;

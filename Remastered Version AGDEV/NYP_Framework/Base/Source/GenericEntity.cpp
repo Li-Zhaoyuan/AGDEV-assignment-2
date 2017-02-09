@@ -16,11 +16,12 @@ GenericEntity::GenericEntity(Mesh* _modelMesh)
 {
     isDone = false;
     boundary_ = nullptr;
-    howManyLives = 2;
+    howManyLives = 10;
 	isVisible = true;
 	isKilledByBullet = true;
 	levelOfDetail_Distances[0] = 0.f;
 	levelOfDetail_Distances[1] = 0.f;
+	health = 100;
 }
 
 GenericEntity::~GenericEntity()
@@ -52,6 +53,7 @@ void GenericEntity::Render()
         modelStack.PopMatrix();
     }
 }
+
 
 // Set the maxAABB and minAABB
 //void GenericEntity::SetAABB(Vector3 maxAABB, Vector3 minAABB)
@@ -90,8 +92,9 @@ bool GenericEntity::onNotify(const std::string &zeEvent)
 {
     if (zeEvent.find("DIED") != std::string::npos && !isDone)
     {
-        --howManyLives;
-        if (howManyLives == 0)
+        //--howManyLives;
+		health -= 10;
+		if (health == 0)
         {
             isDone = true;
 			isShot = true;
@@ -108,7 +111,7 @@ bool GenericEntity::onNotify(const std::string &zeEvent)
     }
     else if (zeEvent.find("RESET") != std::string::npos)
     {
-        howManyLives = 2;
+		health = 100;
         isDone = false;
         return true;
     }
