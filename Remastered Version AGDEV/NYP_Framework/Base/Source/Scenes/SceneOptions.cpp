@@ -80,9 +80,9 @@ void SceneOptions::Init()
 
 	boundaries.Set(400, 300, 10);   // We will just take the resolution of 800 by 600
 
-	m_activeList.push_back(Create::Text2DObject("text", Vector3(-boundaries.x, -boundaries.y + 50, 0), "Press Space To Start", Vector3(25, 25, 1), Color(0, 1, 0)));
+	//m_activeList.push_back(Create::Text2DObject("text", Vector3(-boundaries.x, -boundaries.y + 50, 0), "Press Space To Start", Vector3(25, 25, 1), Color(0, 1, 0)));
 	debuggingMouse = Create::Text2DObject("text", Vector3(-boundaries.x, -boundaries.y + 75, 0), "Mouse", Vector3(25, 25, 1), Color(0, 1, 0));
-	m_activeList.push_back(debuggingMouse);
+	//m_activeList.push_back(debuggingMouse);
 
 	gameWidth = Application::GetInstance().GetWindowWidth();
 	gameHeight = Application::GetInstance().GetWindowHeight();

@@ -418,7 +418,7 @@ void SceneText::Update(double dt)
 	}
 	if (theAIShip->getHealth() <= 0)//ship gone
 	{
-		std::string str = "TIme = " ;
+		std::string str = "Time = " ;
 		str.append(std::to_string(timeLeft_Second));
 		LuaInterface::GetInstance()->saveFloatValue(str.c_str(), 0);
 		playerInfo->thePlayerEntity.SetPosition(Vector3(0, 0, 0));
